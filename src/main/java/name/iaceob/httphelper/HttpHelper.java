@@ -285,15 +285,19 @@ public class HttpHelper {
         return Charset.forName(ct);
     }
 
+    private void resetDepth() {
+        this.setDepth(false);
+        this.depthIndex = 0;
+    }
 
     private void doDepth(Map<String, String> paras, String charset) {
         if (!this.depth||this.getLocation()==null) return;
         if (this.getLocation().equals(url)) {
-            this.setDepth(false);
+            this.resetDepth();
             throw new RuntimeException("错误的重定向");
         }
         if (this.depthIndex.equals(this.depthCount)) {
-            this.setDepth(false);
+            this.resetDepth();
             throw new RuntimeException("过多的重定向");
         }
         log.info("将重定向至: {}", this.getLocation());
@@ -305,13 +309,11 @@ public class HttpHelper {
     private void doDepth(Map<String, String> paras, Map<String, String> data, String charset) {
         if (!this.depth||this.getLocation()==null) return;
         if (this.getLocation().equals(url)) {
-            this.setDepth(false);
-            this.depthIndex = 0;
+            this.resetDepth();
             throw new RuntimeException("错误的重定向");
         }
         if (this.depthIndex.equals(this.depthCount)) {
-            this.setDepth(false);
-            this.depthIndex = 0;
+            this.resetDepth();
             throw new RuntimeException("过多的重定向");
         }
         log.info("将重定向至: {}", this.getLocation());
@@ -370,7 +372,7 @@ public class HttpHelper {
             }
             this.setHtml(new String(html.getBytes(HTTP.DEF_CONTENT_CHARSET), Charset.forName(charset)));
             this.doDepth(paras, charset);
-            this.depthIndex = 0;
+            this.resetDepth();
         } catch (ClientProtocolException e) {
             log.error(e.getMessage(), e);
         } catch (UnsupportedCharsetException e) {
@@ -445,7 +447,7 @@ public class HttpHelper {
             }
             this.setHtml(new String(html.getBytes(HTTP.DEF_CONTENT_CHARSET), Charset.forName(charset)));
             this.doDepth(paras, data, charset);
-            this.depthIndex = 0;
+            this.resetDepth();
         } catch (UnsupportedEncodingException e) {
             log.error(e.getMessage(), e);
         } catch (ClientProtocolException e) {
