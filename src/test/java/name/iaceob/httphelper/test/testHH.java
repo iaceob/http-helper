@@ -1,7 +1,5 @@
 package name.iaceob.httphelper.test;
 
-import com.jfinal.kit.JsonKit;
-import com.jfinal.kit.StrKit;
 import name.iaceob.httphelper.HttpHelper;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -36,8 +34,8 @@ public class testHH {
         Map<String, String> reph = hh.getResponseHeaders();
 
         // log.debug(html);
-        log.debug("Request Header: {}", JsonKit.toJson(reqh));
-        log.debug("Response Header: {}", JsonKit.toJson(reph));
+        log.debug("Request Header: {}", reqh);
+        log.debug("Response Header: {}", reph);
         log.debug("Location: {}", hh.getLocation());
         log.debug("Cookie: {}", hh.getCookie());
         log.debug("Status Code: {}", hh.getStatCode());
@@ -111,7 +109,7 @@ public class testHH {
 
                 key = (String)entry.getKey();
                 value = (String)entry.getValue();
-                if(StrKit.notBlank(value)) {
+                if(value!=null) {
                     try {
                         value = URLEncoder.encode(value, charset);
                     } catch (UnsupportedEncodingException var9) {
