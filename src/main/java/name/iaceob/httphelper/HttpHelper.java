@@ -130,6 +130,7 @@ public class HttpHelper {
         this.url = null;
         this.depth = false;
         this.depthCount = 3;
+        this.depthIndex = 0;
     }
     public Integer getStatCode() {
         return this.stat;
