@@ -157,7 +157,6 @@ public class HttpHelper {
     public String getLocation() {
         if (this.stat== HttpStatus.SC_MOVED_PERMANENTLY)
             return this.emptyResponseHeaders() ? null : this.getResponseHeaders().get(HttpConst.LOCATION);
-        // TODO xx
         String refreshReg = "<META\\s+[^>]*http-equiv=[\\'\"]?refresh(?=[^>]*URL=['\"]([^\\'\" >]+)['\"])";
         Pattern p = Pattern.compile(refreshReg);
         Matcher m = p.matcher(this.html);
