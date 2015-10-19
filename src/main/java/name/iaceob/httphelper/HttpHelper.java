@@ -1,18 +1,22 @@
 package name.iaceob.httphelper;
 
+
 import org.apache.http.*;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
@@ -47,6 +51,8 @@ public class HttpHelper {
     private Boolean depth = false;
     private Integer depthCount = 3;
     private Integer depthIndex = 0;
+    private String host;
+    private String basePath;
 
     public HttpHelper() {
         Map<String, String> headers = new HashMap<String, String>();
@@ -79,7 +85,7 @@ public class HttpHelper {
     private void setResponseHeaders(Header[] hs) {
         for (Header h : hs) {
             String val = h.getValue();
-            String rspck = this.getResponseHeaders().get("Set-Cookie");
+            String rspck = this.getResponseHeaders()==null ? "" : this.getResponseHeaders().get("Set-Cookie");
             if ("Set-Cookie".equals(h.getName()))
                 val = (rspck==null ? "" : (rspck + ";")) + this.parsetCookie(val);
             this.setResponseHeaders(h.getName(), val);
@@ -99,6 +105,26 @@ public class HttpHelper {
     }
     private void setUrl(String url) {
         this.url = url;
+
+        String reg = "(?<ssl>[http]+(s|))://(?<host>.*?)(/|\\s+|\\?)";
+        Pattern p = Pattern.compile(reg);
+        Matcher m = p.matcher(url);
+        StringBuilder sb = new StringBuilder();
+        if (m.find()) {
+            sb.append(m.group("ssl")).append("://").append(m.group("host"));
+        } else {
+            String var1 = url + "/";
+            m = p.matcher(var1);
+            if (m.find())
+                sb.append(m.group("ssl")).append("://").append(m.group("host"));
+        }
+        this.host = sb.toString();
+
+        Integer ed = 0;
+        Integer lio = url.lastIndexOf("/");
+        ed = lio==6||lio==7 ? url.length() : lio;
+        String var2 = url.split("\\?")[0];
+        this.basePath = var2.substring(0, ed);
     }
     public Map<String, String> getResponseHeaders() {
         return responseHeaders;
@@ -122,8 +148,8 @@ public class HttpHelper {
         return this;
     }
     public void clear() {
-        this.requestHeaders = null;
-        this.responseHeaders = null;
+        // this.requestHeaders = null;
+        this.responseHeaders = new HashMap<String, String>();
         this.proxy = null;
         this.stat = null;
         this.html = null;
@@ -155,14 +181,31 @@ public class HttpHelper {
         this.depthCount = depthCount;
         return this;
     }
+
+    public String getHost() {
+        return this.host;
+    }
+    public String getBasePath() {
+        return this.basePath;
+    }
+
     public String getLocation() {
         if (this.stat== HttpStatus.SC_MOVED_PERMANENTLY)
             return this.emptyResponseHeaders() ? null : this.getResponseHeaders().get(HttpConst.LOCATION);
-        String refreshReg = "<META\\s+[^>]*http-equiv=[\\'\"]?refresh(?=[^>]*URL=['\"]([^\\'\" >]+)['\"])";
-        Pattern p = Pattern.compile(refreshReg);
+        String refreshReg = "<META\\s+http-equiv=\"refresh\".*?URL=('|)(?<url>[^\"]+)";
+        Pattern p = Pattern.compile(refreshReg, Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(this.html);
-        if (m.find()) return m.group(1);
-        return null;
+        if (!m.find()) return null;
+        String refu = m.group("url").replaceAll("'", "");
+        if (refu.charAt(0)=='/') {
+            refu = this.getHost() + refu;
+            return refu;
+        }
+        if (!refu.substring(0, 4).equals("http")) {
+            refu = this.getBasePath() + refu;
+            return refu;
+        }
+        return refu;
     }
     public String getCookie() {
         return this.emptyResponseHeaders() ? null : this.getResponseHeaders().get(HttpConst.SETCOOKIE);
@@ -278,49 +321,52 @@ public class HttpHelper {
      */
     private Charset getHtmlCharset(String html) {
         String ct=null;
-        Pattern pattern = Pattern.compile("<[mM][eE][tT][aA][^>]*([cC][Hh][Aa][Rr][Ss][Ee][Tt][\\s]*=[\\s\\\"']*)([\\w\\d-_]*)[^>]*>");
+        Pattern pattern = Pattern.compile("<meta\\s+.*?charset=(\"|'|)(?<charset>.*?)(\"|'|>)", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(html);
-        ct = matcher.find() ? matcher.group(2).toUpperCase() : null;
+        ct = matcher.find() ? matcher.group("charset").toUpperCase() : null;
         if (ct==null) return this.getBomCharset(html);
         ct = "GB-2312".equals(ct) ? "GBK" : ct;
         return Charset.forName(ct);
     }
 
-    private void resetDepth() {
-        this.setDepth(false);
-        this.depthIndex = 0;
-    }
+//    private void resetDepth() {
+//        this.setDepth(false);
+//        this.depthIndex = 0;
+//    }
 
     private void doDepth(Map<String, String> paras, String charset) {
-        if (!this.depth||this.getLocation()==null) return;
-        if (this.getLocation().equals(url)) {
-            this.resetDepth();
+        String location = this.getLocation();
+        if (!this.depth||location==null) return;
+        if (location.equals(url)) {
+            this.clear();
             throw new RuntimeException("错误的重定向");
         }
         if (this.depthIndex.equals(this.depthCount)) {
-            this.resetDepth();
+            this.clear();
             throw new RuntimeException("过多的重定向");
         }
-        log.info("将重定向至: {}", this.getLocation());
+        log.debug("将重定向至: {}", location);
         this.depthIndex+=1;
-        this.get(this.getLocation(), paras, charset);
+        this.get(location, paras, charset);
         return;
     }
 
-    private void doDepth(Map<String, String> paras, Map<String, String> data, String charset) {
+    private void doDepth(Map<String, String> paras, Object data, String charset) {
         if (!this.depth||this.getLocation()==null) return;
         if (this.getLocation().equals(url)) {
-            this.resetDepth();
+            this.clear();
             throw new RuntimeException("错误的重定向");
         }
         if (this.depthIndex.equals(this.depthCount)) {
-            this.resetDepth();
+            this.clear();
             throw new RuntimeException("过多的重定向");
         }
-        log.info("将重定向至: {}", this.getLocation());
+        log.debug("将重定向至: {}", this.getLocation());
         this.depthIndex+=1;
         this.post(this.getLocation(), paras, data, charset);
     }
+
+
 
 
 
@@ -329,18 +375,29 @@ public class HttpHelper {
         if (url == null || url.isEmpty()) return;
         charset = (charset == null ? HttpConst.DEFAULT_CHARSET : charset);
         CloseableHttpClient hc = null;
+        RequestConfig config = RequestConfig.custom()
+                .setConnectTimeout(HttpConst.TIMEOUT)
+                .setConnectionRequestTimeout(HttpConst.TIMEOUT)
+                .setSocketTimeout(HttpConst.SOTIMEOUT).build();
         if (this.proxy==null) {
-            hc = HttpClients.custom().build();
+            hc = HttpClients.custom().setDefaultRequestConfig(config).build();
         } else {
             HttpHost py = new HttpHost(this.proxy.getHost(), this.proxy.getPort());
-            Credentials credentials = new UsernamePasswordCredentials(this.proxy.getAccount(), this.proxy.getPasswd());
-            AuthScope authScope = new AuthScope(this.proxy.getHost(), this.proxy.getPort());
-            CredentialsProvider credsProvider = new BasicCredentialsProvider();
-            credsProvider.setCredentials(authScope, credentials);
-            hc = HttpClients.custom().setProxy(py).setDefaultCredentialsProvider(credsProvider).build();
-            log.debug("Proxy Server, {}:{}", this.proxy.getHost(), this.proxy.getPort());
+            HttpClientBuilder hcb = HttpClients.custom().setProxy(py).setDefaultRequestConfig(config);
+            if (this.proxy.getAccount()!=null&&!this.proxy.getAccount().isEmpty()) {
+                Credentials credentials = new UsernamePasswordCredentials(this.proxy.getAccount(), this.proxy.getPasswd());
+                AuthScope authScope = new AuthScope(this.proxy.getHost(), this.proxy.getPort());
+                CredentialsProvider credsProvider = new BasicCredentialsProvider();
+                credsProvider.setCredentials(authScope, credentials);
+                hcb.setDefaultCredentialsProvider(credsProvider);
+            }
+            hc = hcb.build();
+            log.info("Proxy Server, {}:{}", this.proxy.getHost(), this.proxy.getPort());
         }
-        HttpGet get = new HttpGet(this.buildUrlWithQueryString(url, paras, charset));
+        url = this.buildUrlWithQueryString(url, paras, charset);
+
+        HttpGet get = new HttpGet(url);
+
         if (this.requestHeaders!=null&&!this.requestHeaders.isEmpty()) {
             Set<String> keys = this.requestHeaders.keySet();
             for(String key : keys)
@@ -349,7 +406,7 @@ public class HttpHelper {
         CloseableHttpResponse response = null;
         String html = null;
         try {
-            log.info("Fetch URL: {}", url);
+            log.debug("Fetch URL: {}", url);
             response = hc.execute(get);
             this.setStat(response.getStatusLine().getStatusCode());
             // 将 reponse header 写入到 reponse header 变量中
@@ -373,7 +430,7 @@ public class HttpHelper {
             }
             this.setHtml(new String(html.getBytes(HTTP.DEF_CONTENT_CHARSET), Charset.forName(charset)));
             this.doDepth(paras, charset);
-            this.resetDepth();
+            this.clear();
         } catch (ClientProtocolException e) {
             log.error(e.getMessage(), e);
         } catch (UnsupportedCharsetException e) {
@@ -395,37 +452,56 @@ public class HttpHelper {
     }
 
 
-    public void post(String url, Map<String, String> paras, Map<String, String> data, String charset) {
+    public void post(String url, Map<String, String> paras, Object data, String charset) {
         if (url == null || url.isEmpty()) return;
         charset = (charset == null ? HttpConst.DEFAULT_CHARSET : charset);
         CloseableHttpClient hc = null;
+        RequestConfig config = RequestConfig.custom()
+                .setConnectTimeout(HttpConst.TIMEOUT)
+                .setConnectionRequestTimeout(HttpConst.TIMEOUT)
+                .setSocketTimeout(HttpConst.SOTIMEOUT).build();
         if (this.proxy==null) {
-            hc = HttpClients.custom().build();
+            hc = HttpClients.custom().setDefaultRequestConfig(config).build();
         } else {
             HttpHost py = new HttpHost(this.proxy.getHost(), this.proxy.getPort());
-            Credentials credentials = new UsernamePasswordCredentials(this.proxy.getAccount(), this.proxy.getPasswd());
-            AuthScope authScope = new AuthScope(this.proxy.getHost(), this.proxy.getPort());
-            CredentialsProvider credsProvider = new BasicCredentialsProvider();
-            credsProvider.setCredentials(authScope, credentials);
-            hc = HttpClients.custom().setProxy(py).setDefaultCredentialsProvider(credsProvider).build();
-            log.debug("Proxy Server, {}:{}", this.proxy.getHost(), this.proxy.getPort());
+            HttpClientBuilder hcb = HttpClients.custom().setProxy(py).setDefaultRequestConfig(config);
+            if (this.proxy.getAccount()!=null&&!this.proxy.getAccount().isEmpty()) {
+                Credentials credentials = new UsernamePasswordCredentials(this.proxy.getAccount(), this.proxy.getPasswd());
+                AuthScope authScope = new AuthScope(this.proxy.getHost(), this.proxy.getPort());
+                CredentialsProvider credsProvider = new BasicCredentialsProvider();
+                credsProvider.setCredentials(authScope, credentials);
+                hcb.setDefaultCredentialsProvider(credsProvider);
+            }
+            hc = hcb.build();
+            log.info("Proxy Server, {}:{}", this.proxy.getHost(), this.proxy.getPort());
         }
-        List<NameValuePair> params = getParamsList(data);
-        UrlEncodedFormEntity formEntity = null;
-        HttpPost post = null;
-        CloseableHttpResponse response = null;
-        String html = null;
 
+
+        HttpPost post = null;
+        String html = null;
+        CloseableHttpResponse response = null;
         try {
-            formEntity = new UrlEncodedFormEntity(params, charset);
+
             post = new HttpPost(this.buildUrlWithQueryString(url, paras, charset));
-            post.setEntity(formEntity);
+
+            if (data instanceof Map) {
+                Map<String, String> var1 = (Map<String, String>) data;
+                List<NameValuePair> params = getParamsList(var1);
+                UrlEncodedFormEntity formEntity = null;
+                formEntity = new UrlEncodedFormEntity(params, charset);
+                post.setEntity(formEntity);
+            }
+            if (data instanceof String) {
+                StringEntity entity = new StringEntity(data.toString(), charset);
+                post.setEntity(entity);
+            }
+
             if (this.requestHeaders!=null&&!this.requestHeaders.isEmpty()) {
                 Set<String> keys = this.requestHeaders.keySet();
                 for(String key : keys)
                     post.addHeader(key, this.requestHeaders.get(key));
             }
-            log.info("Fetch URL: {}", url);
+            log.debug("Fetch URL: {}", url);
             response = hc.execute(post);
             this.setStat(response.getStatusLine().getStatusCode());
             this.setResponseHeaders(response.getAllHeaders());
@@ -448,7 +524,7 @@ public class HttpHelper {
             }
             this.setHtml(new String(html.getBytes(HTTP.DEF_CONTENT_CHARSET), Charset.forName(charset)));
             this.doDepth(paras, data, charset);
-            this.resetDepth();
+            this.clear();
         } catch (UnsupportedEncodingException e) {
             log.error(e.getMessage(), e);
         } catch (ClientProtocolException e) {
@@ -481,5 +557,12 @@ public class HttpHelper {
     public void post(String url, Map<String, String> data) {
         this.post(url, data, HttpConst.DEFAULT_CHARSET);
     }
+    public void post(String url, String data, String charset) {
+        this.post(url, null, data, charset);
+    }
+    public void post(String url, String data) {
+        this.post(url, data, HttpConst.DEFAULT_CHARSET);
+    }
+
 
 }
