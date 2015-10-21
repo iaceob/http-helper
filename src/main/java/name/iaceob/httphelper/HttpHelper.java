@@ -400,8 +400,11 @@ public class HttpHelper {
 
         if (this.requestHeaders!=null&&!this.requestHeaders.isEmpty()) {
             Set<String> keys = this.requestHeaders.keySet();
-            for(String key : keys)
+            for(String key : keys) {
+                if (this.requestHeaders.get(key)==null||"".equals(this.requestHeaders.get(key)))
+                    continue;
                 get.addHeader(key, this.requestHeaders.get(key));
+            }
         }
         CloseableHttpResponse response = null;
         String html = null;
@@ -498,8 +501,11 @@ public class HttpHelper {
 
             if (this.requestHeaders!=null&&!this.requestHeaders.isEmpty()) {
                 Set<String> keys = this.requestHeaders.keySet();
-                for(String key : keys)
+                for(String key : keys) {
+                    if (this.requestHeaders.get(key)==null||"".equals(this.requestHeaders.get(key)))
+                        continue;
                     post.addHeader(key, this.requestHeaders.get(key));
+                }
             }
             log.debug("Fetch URL: {}", url);
             response = hc.execute(post);
