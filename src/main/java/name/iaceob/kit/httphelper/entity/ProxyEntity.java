@@ -1,20 +1,20 @@
-package name.iaceob.httphelper;
+package name.iaceob.kit.httphelper.entity;
 
 /**
  * Created by iaceob on 2015/10/10.
  */
-public class HttpProxy {
+public class ProxyEntity {
     private String host;
     private Integer port;
     private String account;
     private String password;
 
-    public HttpProxy(String host, Integer port) {
+    public ProxyEntity(String host, Integer port) {
         this.host = host;
         this.port = port;
     }
 
-    public HttpProxy(String host, Integer port, String account, String password) {
+    public ProxyEntity(String host, Integer port, String account, String password) {
         this.host = host;
         this.port = port;
         this.account = account;

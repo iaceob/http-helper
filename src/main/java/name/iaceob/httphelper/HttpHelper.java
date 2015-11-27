@@ -385,7 +385,7 @@ public class HttpHelper {
             HttpHost py = new HttpHost(this.proxy.getHost(), this.proxy.getPort());
             HttpClientBuilder hcb = HttpClients.custom().setProxy(py).setDefaultRequestConfig(config);
             if (this.proxy.getAccount()!=null&&!this.proxy.getAccount().isEmpty()) {
-                Credentials credentials = new UsernamePasswordCredentials(this.proxy.getAccount(), this.proxy.getPasswd());
+                Credentials credentials = new UsernamePasswordCredentials(this.proxy.getAccount(), this.proxy.getPassword());
                 AuthScope authScope = new AuthScope(this.proxy.getHost(), this.proxy.getPort());
                 CredentialsProvider credsProvider = new BasicCredentialsProvider();
                 credsProvider.setCredentials(authScope, credentials);
@@ -469,7 +469,7 @@ public class HttpHelper {
             HttpHost py = new HttpHost(this.proxy.getHost(), this.proxy.getPort());
             HttpClientBuilder hcb = HttpClients.custom().setProxy(py).setDefaultRequestConfig(config);
             if (this.proxy.getAccount()!=null&&!this.proxy.getAccount().isEmpty()) {
-                Credentials credentials = new UsernamePasswordCredentials(this.proxy.getAccount(), this.proxy.getPasswd());
+                Credentials credentials = new UsernamePasswordCredentials(this.proxy.getAccount(), this.proxy.getPassword());
                 AuthScope authScope = new AuthScope(this.proxy.getHost(), this.proxy.getPort());
                 CredentialsProvider credsProvider = new BasicCredentialsProvider();
                 credsProvider.setCredentials(authScope, credentials);
