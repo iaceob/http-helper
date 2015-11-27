@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>name.iaceob</groupId>
+    <groupId>name.iaceob.kit</groupId>
     <artifactId>http-helper</artifactId>
-    <version>1.0-beta</version>
+    <version>2.0-beta</version>
     <packaging>jar</packaging>
     <name>http-helper</name>
     <description>Http Helper</description>
@@ -19,7 +19,7 @@
         <version-logback>1.1.2</version-logback>
         <vension-slf4j>1.7.12</vension-slf4j>
         <version-testng>6.9.9</version-testng>
-        <version-httpclient>4.5</version-httpclient>
+        <!--<version-httpclient>4.5</version-httpclient>-->
     </properties>
 
     <dependencies>
@@ -49,11 +49,11 @@
             <version>${version-testng}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>${version-httpclient}</version>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
 

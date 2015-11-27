@@ -17,7 +17,6 @@ public class ProxyAuthenticator extends Authenticator {
     }
     @Override
     protected PasswordAuthentication getPasswordAuthentication() {
-        return (new PasswordAuthentication("user",
-                "password".toCharArray()));
+        return (new PasswordAuthentication(this.account, this.password.toCharArray()));
     }
 }
