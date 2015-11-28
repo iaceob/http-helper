@@ -31,6 +31,9 @@ HttpEntity he = HttpKit.get(url);
 HttpEntity he = HttpKit.post(url, data);
 ```
 
+## v2.3.1-beta
+修復獲取 basePath 錯誤問題
+
 ## v2.2.9-beta
 HttpEntity 添加 protocol domain host basePath
 

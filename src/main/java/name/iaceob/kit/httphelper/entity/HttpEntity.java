@@ -139,9 +139,14 @@ public class HttpEntity {
     }
 
     public String getBasePath() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(this.getHost()).append(this.getPath());
-        return sb.toString();
+       String url = this.getUrl();
+        url = url.split("\\?")[0];
+        Integer ed = 0;
+        Integer lio = url.lastIndexOf("/");
+        // http:// | https://
+        //      6          7
+        ed = lio==6||lio==7 ? url.length() : lio;
+        return url.substring(0, ed);
     }
 
     public String toString() {

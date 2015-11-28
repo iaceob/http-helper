@@ -6,7 +6,7 @@
 
     <groupId>name.iaceob.kit</groupId>
     <artifactId>http-helper</artifactId>
-    <version>2.2.9-beta</version>
+    <version>2.3.1-beta</version>
     <packaging>jar</packaging>
     <name>http-helper</name>
     <description>Http Helper</description>
