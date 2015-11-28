@@ -31,6 +31,9 @@ HttpEntity he = HttpKit.get(url);
 HttpEntity he = HttpKit.post(url, data);
 ```
 
+# v2.2.5-beta
+HttpKit 增加 AutoDetectCharset 选项
+
 ## v2.2.4-beta
 copy HttpClient@HttpStatus.java
 

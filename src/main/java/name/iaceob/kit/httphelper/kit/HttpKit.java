@@ -21,10 +21,10 @@ public class HttpKit {
 
     public static HttpEntity get(String url, Map<String, String> paras, Map<String, String> header,
                                  ProxyEntity proxy, Charset charset, Integer connectTimeout,
-                                 Integer readTimeout) {
+                                 Integer readTimeout, Boolean autoDetectCharset) {
         try {
             HttpConfig config = HttpConfig.create.setConnectTimeout(connectTimeout)
-                    .setReadTimeout(readTimeout).setCharset(charset);
+                    .setReadTimeout(readTimeout).setCharset(charset).setAutoDetectCharset(autoDetectCharset);
             HttpConnectionBuilder hb = HttpConnectionBuilder.create().setConfig(config);
             if (proxy != null) hb.setProxy(proxy);
             HttpConnection hc = hb.build();
@@ -38,11 +38,11 @@ public class HttpKit {
     }
 
     public static HttpEntity post(String url, Map<String, String> paras, String data, Map<String, String> header,
-                                  ProxyEntity proxy, Charset charset, Integer connectTimeout,
-                                  Integer readTimeout) {
+                                  ProxyEntity proxy, Charset charset, Integer connectTimeout, Integer readTimeout,
+                                  Boolean autoDetectCharset) {
         try {
             HttpConfig config = HttpConfig.create.setConnectTimeout(connectTimeout)
-                    .setReadTimeout(readTimeout).setCharset(charset);
+                    .setReadTimeout(readTimeout).setCharset(charset).setAutoDetectCharset(autoDetectCharset);
             HttpConnectionBuilder hb = HttpConnectionBuilder.create().setConfig(config);
             if (proxy != null) hb.setProxy(proxy);
             HttpConnection hc = hb.build();
@@ -58,7 +58,7 @@ public class HttpKit {
 
     public static HttpEntity get(String url, Map<String, String> paras, Map<String, String> header,
                                  ProxyEntity proxy) {
-        return HttpKit.get(url, paras, header, proxy, HttpConst.DEF_CHARSET, HttpConst.DEF_TIMEOUT, HttpConst.DEF_SOTIMEOUT);
+        return HttpKit.get(url, paras, header, proxy, HttpConst.DEF_CHARSET, HttpConst.DEF_TIMEOUT, HttpConst.DEF_SOTIMEOUT, false);
     }
 
     public static HttpEntity get(String url, Map<String, String> paras, Map<String, String> header) {
@@ -75,7 +75,7 @@ public class HttpKit {
 
     public static HttpEntity post(String url, Map<String, String> paras, String data, Map<String, String> header,
                                   ProxyEntity proxy) {
-        return HttpKit.post(url, paras, data, header, proxy, HttpConst.DEF_CHARSET, HttpConst.DEF_TIMEOUT, HttpConst.DEF_SOTIMEOUT);
+        return HttpKit.post(url, paras, data, header, proxy, HttpConst.DEF_CHARSET, HttpConst.DEF_TIMEOUT, HttpConst.DEF_SOTIMEOUT, false);
     }
 
     public static HttpEntity post(String url, Map<String, String> paras, String data, Map<String, String> header) {
