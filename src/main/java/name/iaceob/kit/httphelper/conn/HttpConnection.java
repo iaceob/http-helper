@@ -178,6 +178,27 @@ public class HttpConnection {
             String e;
             conn = this.getConnection(req);
             conn.connect();
+
+            OutputStream os = conn.getOutputStream();
+            switch (req.getMethod()) {
+                case GET:
+                    break;
+                case POST:
+                    if (req.getData()==null) break;
+                    os.write(req.getData().getBytes(this.config.getCharset()));
+                    break;
+                case PUT:
+                    if (req.getData()==null) break;
+                    os.write(req.getData().getBytes(this.config.getCharset()));
+                    break;
+                case DELETE:
+                    if (req.getData()==null) break;
+                    os.write(req.getData().getBytes(this.config.getCharset()));
+                    break;
+            }
+            os.flush();
+            os.close();
+
             e = this.readResponseString(conn, this.config.getCharset());
             if (this.config.getAutoDetectCharset()) {
                 e = new String(e.getBytes(HttpConst.DEF_CONTENT_CHARSET), IdentifyCharset.identify(e));

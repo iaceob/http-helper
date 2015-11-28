@@ -26,43 +26,50 @@ public class HttpReq {
     }
 
     public String getUrl() {
-        return url;
+        return this.url;
     }
 
-    public void setUrl(String url) {
+    public HttpReq setUrl(String url) {
         this.url = url;
+        return this;
     }
 
     public Map<String, String> getHeaders() {
-        return headers;
+        return this.headers;
     }
 
-    public void setHeaders(Map<String, String> headers) {
-        this.headers = headers;
+    public HttpReq setHeaders(Map<String, String> headers) {
+        if (headers==null) return this;
+        for (String key : headers.keySet())
+            this.headers.put(key, headers.get(key));
+        return this;
     }
 
     public HttpMethod getMethod() {
-        return method;
+        return this.method;
     }
 
-    public void setMethod(HttpMethod method) {
+    public HttpReq setMethod(HttpMethod method) {
         this.method = method;
+        return this;
     }
 
     public Map<String, String> getParas() {
-        return paras;
+        return this.paras;
     }
 
-    public void setParas(Map<String, String> paras) {
+    public HttpReq setParas(Map<String, String> paras) {
         this.paras = paras;
+        return this;
     }
 
     public String getData() {
-        return data;
+        return this.data;
     }
 
-    public void setData(String data) {
+    public HttpReq setData(String data) {
         this.data = data;
+        return this;
     }
 
     // ======

@@ -2,7 +2,7 @@
 
 ## 使用方式
 ```
-url = "http://example.com";
+String url = "http://example.com";
 // 设置链接配置信息
 HttpConfig config = HttpConfig.create.setConnectTimeout(HttpConst.DEF_TIMEOUT)
         .setCharset(Charset.forName("utf-8")).setXxx;
@@ -25,6 +25,14 @@ he.getHeaderToStr("Location");
 he.getHtml();
 ```
 
+或者更简单的方式使用 HttpKit
+```
+HttpEntity he = HttpKit.get(url);
+HttpEntity he = Http.post(url, data);
+```
+
+## v2.2-beta
+修复 HttpConnection post 未传递参数错误, 另增加 HttpKit 快捷调用
 
 ## v2.1-beta
 完成 response header 提取
