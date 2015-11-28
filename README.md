@@ -31,6 +31,9 @@ HttpEntity he = HttpKit.get(url);
 HttpEntity he = HttpKit.post(url, data);
 ```
 
+## v2.2.1-beta
+HttpEntity 中增加请求 URL
+
 ## v2.2-beta
 修复 HttpConnection post 未传递参数错误, 另增加 HttpKit 快捷调用
 

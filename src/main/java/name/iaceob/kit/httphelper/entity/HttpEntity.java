@@ -9,8 +9,18 @@ import java.util.Set;
  * Created by cox on 2015/11/27.
  */
 public class HttpEntity {
+    private String url;
     private String html;
     private Map<String, List<String>> headers;
+
+    public String getUrl() {
+        return this.url;
+    }
+
+    public HttpEntity setUrl(String url) {
+        this.url = url;
+        return this;
+    }
 
     public String getHtml() {
         return this.html;
@@ -41,6 +51,8 @@ public class HttpEntity {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(super.toString()).append(" {");
+
+        sb.append("url: ").append(this.getUrl()).append(", ");
 
         Map<String, List<String>> headerFields = this.getHeaders();
 

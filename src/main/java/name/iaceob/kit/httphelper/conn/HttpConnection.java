@@ -203,7 +203,7 @@ public class HttpConnection {
             if (this.config.getAutoDetectCharset()) {
                 e = new String(e.getBytes(HttpConst.DEF_CONTENT_CHARSET), IdentifyCharset.identify(e));
             }
-            entity.setHtml(e).setHeaders(conn.getHeaderFields());
+            entity.setUrl(conn.getURL().toString()).setHtml(e).setHeaders(conn.getHeaderFields());
         } catch (Exception var8) {
             throw new RuntimeException(var8);
         } finally {
