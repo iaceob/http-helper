@@ -38,6 +38,7 @@ public class HttpHelperTest {
         url = "http://www.ahcaijing.com/news/2014/0317/378136.shtml";
         url = "http://finance.ifeng.com/news/region/20120718/6775697.shtml";
         url = "http://china.findlaw.cn/ask/question_31067572.html";
+        url = "http://m.tianya.cn/sch/sch.jsp?vu=28456309174&o=1&k=sag&t=2";
         HttpConfig config = HttpConfig.create.setConnectTimeout(HttpConst.DEF_TIMEOUT)
                 .setCharset(Charset.forName("utf-8"))
                 ;
@@ -49,7 +50,7 @@ public class HttpHelperTest {
         HttpReq req = new HttpReq(HttpMethod.GET, url);
         // req.setHeader(HttpConst.COOKIE, "sf_remember=5ea78002e05b9699e46727a95f37a30c;PHPSESSID=web2~3fg8r6t705k7me8qunvkqc0p41");
         HttpEntity he = hc.exec(req);
-        log.debug(he.getUrl());
+        log.debug(he.getBasePath());
     }
 
     @Test
