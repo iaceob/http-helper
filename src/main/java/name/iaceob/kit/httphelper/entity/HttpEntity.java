@@ -10,8 +10,38 @@ import java.util.Set;
  */
 public class HttpEntity {
     private String url;
+    private String host;
+    private String uri;
     private String html;
+    private Integer responseCode;
     private Map<String, List<String>> headers;
+
+    public Integer getResponseCode() {
+        return this.responseCode;
+    }
+
+    public HttpEntity setResponseCode(Integer stateCode) {
+        this.responseCode = stateCode;
+        return this;
+    }
+
+    public String getHost() {
+        return this.host;
+    }
+
+    public HttpEntity setHost(String host) {
+        this.host = host;
+        return this;
+    }
+
+    public String getUri() {
+        return this.uri;
+    }
+
+    public HttpEntity setUri(String uri) {
+        this.uri = uri;
+        return this;
+    }
 
     public String getUrl() {
         return this.url;
@@ -53,6 +83,8 @@ public class HttpEntity {
         sb.append(super.toString()).append(" {");
 
         sb.append("url: ").append(this.getUrl()).append(", ");
+        sb.append("uri: ").append(this.getUri()).append(", ");
+        sb.append("host: ").append(this.getHost()).append(", ");
 
         Map<String, List<String>> headerFields = this.getHeaders();
 

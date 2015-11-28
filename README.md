@@ -31,6 +31,12 @@ HttpEntity he = HttpKit.get(url);
 HttpEntity he = HttpKit.post(url, data);
 ```
 
+## v2.2.3-beta
+HttpEntity 增加 ResponseCode
+
+## v2.2.2-beta
+HttpEntity 增加 URI 以及 HOST
+
 ## v2.2.1-beta
 HttpEntity 中增加请求 URL
 
