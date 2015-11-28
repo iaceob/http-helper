@@ -1,9 +1,14 @@
 package name.iaceob.kit.httphelper.entity;
 
+import name.iaceob.kit.httphelper.common.HttpConst;
+import name.iaceob.kit.httphelper.http.HttpStatus;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by cox on 2015/11/27.
@@ -76,6 +81,31 @@ public class HttpEntity {
 
     public String getHeaderToStr(String key) {
         return this.getHeader(key).get(0);
+    }
+
+    /**
+     * 获取 URL 转发的链接
+     * @return
+     */
+    public String getLocation() {
+        if (this.getResponseCode() == HttpStatus.SC_MOVED_TEMPORARILY) {
+            List<String> vals = this.getHeader(HttpConst.LOCATION);
+            if (vals!=null && !vals.isEmpty()) return vals.get(0);
+        }
+        String refreshReg = "<META\\s+http-equiv=\"refresh\".*?URL=('|)(?<url>[^\"]+)";
+        Pattern p = Pattern.compile(refreshReg, Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(this.getHtml());
+        if (!m.find()) return null;
+        String refu = m.group("url").replaceAll("'", "");
+        if (refu.charAt(0)=='/') {
+            refu = this.getHost() + refu;
+            return refu;
+        }
+        if (!refu.substring(0, 4).equals("http")) {
+            refu = this.getUri() + refu;
+            return refu;
+        }
+        return refu;
     }
 
     public String toString() {

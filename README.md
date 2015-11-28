@@ -31,7 +31,10 @@ HttpEntity he = HttpKit.get(url);
 HttpEntity he = HttpKit.post(url, data);
 ```
 
-# v2.2.5-beta
+## v2.2.6-beta
+HttpEntity 中增加获取转发链接
+
+## v2.2.5-beta
 HttpKit 增加 AutoDetectCharset 选项
 
 ## v2.2.4-beta
