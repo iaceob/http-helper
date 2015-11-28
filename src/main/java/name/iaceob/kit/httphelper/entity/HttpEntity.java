@@ -15,11 +15,41 @@ import java.util.regex.Pattern;
  */
 public class HttpEntity {
     private String url;
+    private String protocol;
+    private String domain;
+    private String path;
     private String host;
     private String uri;
     private String html;
     private Integer responseCode;
     private Map<String, List<String>> headers;
+
+    public String getPath() {
+        return path;
+    }
+
+    public HttpEntity setPath(String path) {
+        this.path = path;
+        return this;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public HttpEntity setDomain(String domain) {
+        this.domain = domain;
+        return this;
+    }
+
+    public String getProtocol() {
+        return this.protocol;
+    }
+
+    public HttpEntity setProtocol(String protocol) {
+        this.protocol = protocol;
+        return this;
+    }
 
     public Integer getResponseCode() {
         return this.responseCode;
@@ -106,6 +136,12 @@ public class HttpEntity {
             return refu;
         }
         return refu;
+    }
+
+    public String getBasePath() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.getHost()).append(this.getPath());
+        return sb.toString();
     }
 
     public String toString() {

@@ -31,6 +31,9 @@ HttpEntity he = HttpKit.get(url);
 HttpEntity he = HttpKit.post(url, data);
 ```
 
+## v2.2.9-beta
+HttpEntity 添加 protocol domain host basePath
+
 ## v2.2.8-beta
 修复 get 方式访问, 405 状态错误
 

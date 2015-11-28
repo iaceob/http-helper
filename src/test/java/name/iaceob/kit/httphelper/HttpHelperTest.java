@@ -33,17 +33,19 @@ public class HttpHelperTest {
         url = "http://politics.people.com.cn/BIG5/n/2014/0226/c70731-24469659.html";
         url = "http://baidu.com/";
         url = "http://sd.china.com.cn/a/2015/fzzx_0516/230615.html";
+        url = "http://www.chinaso.com/search/link?url=d12ln5Mp58P%2FwdMVX43HkzYR6tqhI%2Bb5%2Bh2qzlCSj0AGgjKhAYovQg1svQL4K1%2B1&pos=0&wd=%E9%B8%A0%E6%B1%9F%E5%8C%BA+%E5%A4%B1%E8%B8%AA";
+        // url = "http://baidu.com/s?wd=java";
         HttpConfig config = HttpConfig.create.setConnectTimeout(HttpConst.DEF_TIMEOUT)
                 .setCharset(Charset.forName("utf-8"));
-        ProxyEntity pe = new ProxyEntity("192.168.25.254", 28129);
-        pe.setAccount("yproxyq").setPassword("zproxyx0#");
+//        ProxyEntity pe = new ProxyEntity("192.168.25.254", 28129);
+//        pe.setAccount("yproxyq").setPassword("zproxyx0#");
         HttpConnection hc = HttpConnectionBuilder.create().setConfig(config)
-                .setProxy(pe)
+                // .setProxy(pe)
                 .build();
         HttpReq req = new HttpReq(HttpMethod.GET, url);
         // req.setHeader(HttpConst.COOKIE, "sf_remember=5ea78002e05b9699e46727a95f37a30c;PHPSESSID=web2~3fg8r6t705k7me8qunvkqc0p41");
         HttpEntity he = hc.exec(req);
-        log.debug(he.getHtml());
+        log.debug(he.getBasePath());
     }
 
     @Test

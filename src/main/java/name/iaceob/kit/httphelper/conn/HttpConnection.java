@@ -189,9 +189,13 @@ public class HttpConnection {
             if (this.config.getAutoDetectCharset()) {
                 e = new String(e.getBytes(HttpConst.DEF_CONTENT_CHARSET), IdentifyCharset.identify(e));
             }
-            entity.setUrl(conn.getURL().toString()).setHtml(e)
+            URL respUrl = conn.getURL();
+            entity.setUrl(respUrl.toString()).setHtml(e)
                     .setResponseCode(conn.getResponseCode())
-                    .setUri(conn.getURL().getPath()).setHost(conn.getURL().getHost())
+                    .setUri(respUrl.getPath()).setDomain(respUrl.getHost())
+                    .setProtocol(respUrl.getProtocol())
+                    .setHost(respUrl.getProtocol() + "://" + respUrl.getHost())
+                    .setPath(respUrl.getPath())
                     .setHeaders(conn.getHeaderFields());
         } catch (Exception var8) {
             throw new RuntimeException(var8);
