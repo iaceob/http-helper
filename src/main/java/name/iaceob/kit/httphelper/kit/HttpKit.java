@@ -49,6 +49,7 @@ public class HttpKit {
             HttpReq req = new HttpReq(HttpMethod.POST, url);
             if (paras!=null) req.setParas(paras);
             if (header!=null) req.setHeader(header);
+            if (data!=null) req.setData(data);
             return hc.exec(req);
         } catch (IOException e) {
             throw new RuntimeException(e);

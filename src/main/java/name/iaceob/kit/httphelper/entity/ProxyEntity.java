@@ -60,8 +60,9 @@ public class ProxyEntity {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(super.toString()).append(" {");
-        sb.append("host").append(":").append(this.getHost()).append(", ")
-                .append("port").append(":").append(this.getPassword()).append("}");
+        if (this.getHost()!=null) sb.append("host").append(":").append(this.getHost()).append(", ");
+        if (this.getPort()!=null) sb.append("port").append(":").append(this.getPort());
+        sb.append("}");
         return sb.toString();
     }
 }

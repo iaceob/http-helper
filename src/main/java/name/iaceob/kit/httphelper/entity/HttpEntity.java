@@ -118,20 +118,22 @@ public class HttpEntity {
 
         Map<String, List<String>> headerFields = this.getHeaders();
 
-        Set<String> headerFieldsSet = headerFields.keySet();
-        Iterator<String> hearerFieldsItera = headerFieldsSet.iterator();
+        if (headerFields!=null) {
+            Set<String> headerFieldsSet = headerFields.keySet();
+            Iterator<String> hearerFieldsItera = headerFieldsSet.iterator();
 
-        while (hearerFieldsItera.hasNext()) {
+            while (hearerFieldsItera.hasNext()) {
 
-            String headerFieldKey = hearerFieldsItera.next();
-            List<String> headerFieldValue = headerFields.get(headerFieldKey);
+                String headerFieldKey = hearerFieldsItera.next();
+                List<String> headerFieldValue = headerFields.get(headerFieldKey);
 
-            StringBuilder sb2 = new StringBuilder();
-            for (Integer i=0; i<headerFieldValue.size(); i++) {
-                sb2.append(headerFieldValue.get(i)).append(i+1==headerFieldValue.size() ? " " : ", ");
+                StringBuilder sb2 = new StringBuilder();
+                for (Integer i=0; i<headerFieldValue.size(); i++) {
+                    sb2.append(headerFieldValue.get(i)).append(i+1==headerFieldValue.size() ? " " : ", ");
+                }
+
+                sb.append(headerFieldKey).append(":").append(sb2.toString()).append(", ");
             }
-
-            sb.append(headerFieldKey).append(":").append(sb2.toString()).append(", ");
         }
 
         sb.append("html").append(":").append(this.getHtml()==null ? null : this.getHtml().substring(0, this.getHtml().length()>500 ? 500 : this.getHtml().length()))

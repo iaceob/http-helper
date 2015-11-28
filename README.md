@@ -31,6 +31,9 @@ HttpEntity he = HttpKit.get(url);
 HttpEntity he = HttpKit.post(url, data);
 ```
 
+## v2.2.7-beta
+修复 HttpKit.post 参数未写入, HttpEntity 中的 uri 以及 host 未写入
+
 ## v2.2.6-beta
 HttpEntity 中增加获取转发链接
 

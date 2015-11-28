@@ -8,6 +8,7 @@ import name.iaceob.kit.httphelper.conn.HttpConnectionBuilder;
 import name.iaceob.kit.httphelper.entity.HttpEntity;
 import name.iaceob.kit.httphelper.entity.ProxyEntity;
 import name.iaceob.kit.httphelper.http.HttpReq;
+import name.iaceob.kit.httphelper.kit.HttpKit;
 import name.iaceob.kit.httphelper.restful.HttpMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,8 +50,8 @@ public class HttpHelperTest {
     public void ttd2() {
         String url = "http://segmentfault.com/";
         url = "http://politics.people.com.cn/BIG5/n/2014/0226/c70731-24469659.html";
-        String c = HttpKit.get(url);
-        log.debug(c);
+        HttpEntity c = HttpKit.get(url);
+        log.debug(c.getHtml());
 
     }
 

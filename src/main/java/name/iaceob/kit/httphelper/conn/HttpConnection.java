@@ -18,9 +18,7 @@ import java.net.*;
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -205,6 +203,7 @@ public class HttpConnection {
             }
             entity.setUrl(conn.getURL().toString()).setHtml(e)
                     .setResponseCode(conn.getResponseCode())
+                    .setUri(conn.getURL().getPath()).setHost(conn.getURL().getHost())
                     .setHeaders(conn.getHeaderFields());
         } catch (Exception var8) {
             throw new RuntimeException(var8);
@@ -219,8 +218,8 @@ public class HttpConnection {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(super.toString()).append("{");
-        sb.append("config: ").append(this.config.toString()).append(",");
-        sb.append("proxy: ").append(this.proxy.toString());
+        if (this.config!=null) sb.append("config: ").append(this.config.toString()).append(",");
+        if (this.proxy!=null) sb.append("proxy: ").append(this.proxy.toString());
         sb.append("}");
         return sb.toString();
     }
