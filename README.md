@@ -28,7 +28,7 @@ he.getHtml();
 或者更简单的方式使用 HttpKit
 ```
 HttpEntity he = HttpKit.get(url);
-HttpEntity he = Http.post(url, data);
+HttpEntity he = HttpKit.post(url, data);
 ```
 
 ## v2.2-beta
