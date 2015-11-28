@@ -31,6 +31,9 @@ HttpEntity he = HttpKit.get(url);
 HttpEntity he = HttpKit.post(url, data);
 ```
 
+## v2.2.4-beta
+copy HttpClient@HttpStatus.java
+
 ## v2.2.3-beta
 HttpEntity 增加 ResponseCode
 

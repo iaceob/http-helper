@@ -204,7 +204,7 @@ public class HttpConnection {
                 e = new String(e.getBytes(HttpConst.DEF_CONTENT_CHARSET), IdentifyCharset.identify(e));
             }
             entity.setUrl(conn.getURL().toString()).setHtml(e)
-                    .setStateCode(conn.getResponseCode())
+                    .setResponseCode(conn.getResponseCode())
                     .setHeaders(conn.getHeaderFields());
         } catch (Exception var8) {
             throw new RuntimeException(var8);
