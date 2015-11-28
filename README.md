@@ -1,7 +1,7 @@
 #http-helper
 
 ## 使用方式
-<pre>
+```
 url = "http://example.com";
 // 设置链接配置信息
 HttpConfig config = HttpConfig.create.setConnectTimeout(HttpConst.DEF_TIMEOUT)
@@ -23,7 +23,7 @@ HttpEntity he = hc.exec(req);
 he.getHeaderToStr("Location");
 // 获取返回 HTML
 he.getHtml();
-</pre>
+```
 
 
 ## v2.1-beta
