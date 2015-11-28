@@ -1,5 +1,35 @@
 #http-helper
 
+## 使用方式
+<pre>
+url = "http://example.com";
+// 设置链接配置信息
+HttpConfig config = HttpConfig.create.setConnectTimeout(HttpConst.DEF_TIMEOUT)
+        .setCharset(Charset.forName("utf-8")).setXxx;
+// 配置代理信息
+ProxyEntity pe = new ProxyEntity("192.168.25.254", 28129);
+pe.setAccount("yproxyq").setPassword("zproxyx0#"); // 设置代理验证, 或者直接在 new ProxyEntity 中设置代理验证信息
+// 创建 HttpConnection 将 配置信息以及代理等信息放入到 HttpConnection 中
+HttpConnection hc = HttpConnectionBuilder.create().setConfig(config)
+        .setProxy(pe)
+        .build();
+// 创建链接方式 HttpMethod{ GET, POST, PUT, DELETE }
+HttpReq req = new HttpReq(HttpMethod.GET, url);
+// 设置 RequestHeader
+req.setHeader(HttpConst.COOKIE, "key=val");
+// 执行
+HttpEntity he = hc.exec(req);
+// 获取 Response Header, 另有 getHeader 获取 List<String> 所有 Header 和 getHeaders 获取完整 Response Header
+he.getHeaderToStr("Location");
+// 获取返回 HTML
+he.getHtml();
+</pre>
+
+
+## v2.1-beta
+完成 response header 提取
+代理功能测试成功
+
 ## v2.0-beta
 拋棄 HttpClient 實現, 改用 HttpURLConnection 方式實現,
 基本頁面訪問以實現, 待完善

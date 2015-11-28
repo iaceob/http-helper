@@ -51,4 +51,15 @@ public class HttpConfig {
         this.charset = charset;
         return this;
     }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(super.toString()).append(" {");
+        sb.append("connectTimeout: ").append(this.getConnectTimeout()).append(", ");
+        sb.append("readTimeout: ").append(this.getReadTimeout()).append(", ");
+        sb.append("charset: ").append(this.getCharset().displayName()).append(", ");
+        sb.append("autoDetectCharset: ").append(this.getAutoDetectCharset());
+        sb.append(" } ");
+        return sb.toString();
+    }
 }

@@ -6,7 +6,7 @@ import name.iaceob.kit.httphelper.common.IdentifyCharset;
 import name.iaceob.kit.httphelper.config.HttpConfig;
 import name.iaceob.kit.httphelper.entity.HttpEntity;
 import name.iaceob.kit.httphelper.entity.ProxyEntity;
-import name.iaceob.kit.httphelper.helper.HttpReq;
+import name.iaceob.kit.httphelper.http.HttpReq;
 import name.iaceob.kit.httphelper.trust.TrustAnyHostnameVerifier;
 import name.iaceob.kit.httphelper.trust.TrustAnyTrustManager;
 import org.slf4j.Logger;
@@ -18,7 +18,9 @@ import java.net.*;
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -180,8 +182,7 @@ public class HttpConnection {
             if (this.config.getAutoDetectCharset()) {
                 e = new String(e.getBytes(HttpConst.DEF_CONTENT_CHARSET), IdentifyCharset.identify(e));
             }
-            // conn.gethe
-            entity.setHtml(e);
+            entity.setHtml(e).setHeaders(conn.getHeaderFields());
         } catch (Exception var8) {
             throw new RuntimeException(var8);
         } finally {
@@ -192,4 +193,12 @@ public class HttpConnection {
         return entity;
     }
 
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(super.toString()).append("{");
+        sb.append("config: ").append(this.config.toString()).append(",");
+        sb.append("proxy: ").append(this.proxy.toString());
+        sb.append("}");
+        return sb.toString();
+    }
 }

@@ -1,4 +1,4 @@
-package name.iaceob.kit.httphelper.helper;
+package name.iaceob.kit.httphelper.http;
 
 import name.iaceob.kit.httphelper.common.HttpConst;
 import name.iaceob.kit.httphelper.restful.HttpMethod;
@@ -88,5 +88,24 @@ public class HttpReq {
         return this;
     }
 
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(super.toString()).append(" {");
+        sb.append("method: ").append(this.getMethod().getMethod()).append(", ");
+        sb.append("url: ").append(this.getUrl()).append(", ");
+        if (this.paras!=null) {
+            sb.append("paras: {");
+            for (String key : this.paras.keySet()) {
+                sb.append(key).append(": ").append(this.paras.get(key)).append(", ");
+            }
+            sb.append("}, ");
+        } else {
+            sb.append("paras: null, ");
+        }
+        sb.append("data: ").append(this.getData());
+        sb.append("}");
+        return sb.toString();
+    }
 
 }

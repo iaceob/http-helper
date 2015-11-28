@@ -22,38 +22,46 @@ public class ProxyEntity {
     }
 
     public String getHost() {
-        return host;
+        return this.host;
     }
 
-    public void setHost(String host) {
+    public ProxyEntity setHost(String host) {
         this.host = host;
+        return this;
     }
 
     public Integer getPort() {
-        return port;
+        return this.port;
     }
 
-    public void setPort(Integer port) {
+    public ProxyEntity setPort(Integer port) {
         this.port = port;
+        return this;
     }
 
     public String getAccount() {
-        return account;
+        return this.account;
     }
 
-    public void setAccount(String account) {
+    public ProxyEntity setAccount(String account) {
         this.account = account;
+        return this;
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
-    public void setPassword(String password) {
+    public ProxyEntity setPassword(String password) {
         this.password = password;
+        return this;
     }
 
-//    public String toString() {
-//        return JsonKit.toJson(this);
-//    }
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(super.toString()).append(" {");
+        sb.append("host").append(":").append(this.getHost()).append(", ")
+                .append("port").append(":").append(this.getPassword()).append("}");
+        return sb.toString();
+    }
 }
