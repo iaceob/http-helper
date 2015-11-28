@@ -7,6 +7,7 @@ import name.iaceob.kit.httphelper.config.HttpConfig;
 import name.iaceob.kit.httphelper.entity.HttpEntity;
 import name.iaceob.kit.httphelper.entity.ProxyEntity;
 import name.iaceob.kit.httphelper.http.HttpReq;
+import name.iaceob.kit.httphelper.http.HttpStatus;
 import name.iaceob.kit.httphelper.restful.HttpMethod;
 import name.iaceob.kit.httphelper.trust.TrustAnyHostnameVerifier;
 import name.iaceob.kit.httphelper.trust.TrustAnyTrustManager;
@@ -135,7 +136,8 @@ public class HttpConnection {
         charset = this.config.getAutoDetectCharset() ? HttpConst.DEF_CONTENT_CHARSET : charset;
 
         try {
-            inputStream = conn.getInputStream();
+
+            inputStream = conn.getResponseCode() >= HttpStatus.SC_BAD_REQUEST ? conn.getErrorStream() : conn.getInputStream();
 
             String ck = conn.getHeaderField("Set-Cookie");
             List<String> cks = conn.getHeaderFields().get("Set-Cookie");
