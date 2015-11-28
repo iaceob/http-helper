@@ -7,6 +7,7 @@ import name.iaceob.kit.httphelper.config.HttpConfig;
 import name.iaceob.kit.httphelper.entity.HttpEntity;
 import name.iaceob.kit.httphelper.entity.ProxyEntity;
 import name.iaceob.kit.httphelper.http.HttpReq;
+import name.iaceob.kit.httphelper.restful.HttpMethod;
 import name.iaceob.kit.httphelper.trust.TrustAnyHostnameVerifier;
 import name.iaceob.kit.httphelper.trust.TrustAnyTrustManager;
 import org.slf4j.Logger;
@@ -135,14 +136,14 @@ public class HttpConnection {
         try {
             inputStream = conn.getInputStream();
 
-            if (conn.getHeaderField("Content-Encoding")!=null && conn.getHeaderField("Content-Encoding").equals("gzip")){
+            if (conn.getHeaderField("Content-Encoding") != null && conn.getHeaderField("Content-Encoding").equals("gzip")) {
                 e = new BufferedReader(new InputStreamReader(new GZIPInputStream(inputStream), charset));
             } else {
                 e = new BufferedReader(new InputStreamReader(inputStream, charset));
             }
             String line = null;
 
-            while((line = e.readLine()) != null) {
+            while ((line = e.readLine()) != null) {
                 sb.append(line).append("\n");
             }
 
@@ -151,14 +152,14 @@ public class HttpConnection {
         } catch (Exception var14) {
             throw new RuntimeException(var14);
         } finally {
-            if(inputStream != null) {
+            if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException var13) {
                     var13.printStackTrace();
                 }
             }
-            if (e!=null) {
+            if (e != null) {
                 try {
                     e.close();
                 } catch (IOException e1) {
@@ -177,25 +178,12 @@ public class HttpConnection {
             conn = this.getConnection(req);
             conn.connect();
 
-            OutputStream os = conn.getOutputStream();
-            switch (req.getMethod()) {
-                case GET:
-                    break;
-                case POST:
-                    if (req.getData()==null) break;
-                    os.write(req.getData().getBytes(this.config.getCharset()));
-                    break;
-                case PUT:
-                    if (req.getData()==null) break;
-                    os.write(req.getData().getBytes(this.config.getCharset()));
-                    break;
-                case DELETE:
-                    if (req.getData()==null) break;
-                    os.write(req.getData().getBytes(this.config.getCharset()));
-                    break;
+            if (req.getMethod() != HttpMethod.GET) {
+                OutputStream os = conn.getOutputStream();
+                os.write(req.getData().getBytes(this.config.getCharset()));
+                os.flush();
+                os.close();
             }
-            os.flush();
-            os.close();
 
             e = this.readResponseString(conn, this.config.getCharset());
             if (this.config.getAutoDetectCharset()) {
@@ -208,7 +196,7 @@ public class HttpConnection {
         } catch (Exception var8) {
             throw new RuntimeException(var8);
         } finally {
-            if(conn != null) {
+            if (conn != null) {
                 conn.disconnect();
             }
         }
@@ -218,8 +206,8 @@ public class HttpConnection {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(super.toString()).append("{");
-        if (this.config!=null) sb.append("config: ").append(this.config.toString()).append(",");
-        if (this.proxy!=null) sb.append("proxy: ").append(this.proxy.toString());
+        if (this.config != null) sb.append("config: ").append(this.config.toString()).append(",");
+        if (this.proxy != null) sb.append("proxy: ").append(this.proxy.toString());
         sb.append("}");
         return sb.toString();
     }

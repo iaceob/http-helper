@@ -31,6 +31,9 @@ HttpEntity he = HttpKit.get(url);
 HttpEntity he = HttpKit.post(url, data);
 ```
 
+## v2.2.8-beta
+修复 get 方式访问, 405 状态错误
+
 ## v2.2.7-beta
 修复 HttpKit.post 参数未写入, HttpEntity 中的 uri 以及 host 未写入
 
