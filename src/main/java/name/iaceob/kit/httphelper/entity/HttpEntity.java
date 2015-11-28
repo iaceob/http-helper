@@ -105,29 +105,30 @@ public class HttpEntity {
         return this;
     }
 
-    public List<String> getHeader(String key) {
+    public List<String> getHeaders(String key) {
         return this.getHeaders().get(key);
     }
 
-    public String getHeaderToStr(String key) {
-        return this.getHeader(key).get(0);
+    public String getHeader(String key) {
+        return this.getHeaders(key).get(0);
     }
 
     /**
      * 获取 URL 转发的链接
+     *
      * @return
      */
     public String getLocation() {
         if (this.getResponseCode() == HttpStatus.SC_MOVED_TEMPORARILY) {
-            List<String> vals = this.getHeader(HttpConst.LOCATION);
-            if (vals!=null && !vals.isEmpty()) return vals.get(0);
+            String val = this.getHeader(HttpConst.LOCATION);
+            if (val != null && !"".equals(val)) return val;
         }
         String refreshReg = "<META\\s+http-equiv=\"refresh\".*?URL=('|)(?<url>[^\"]+)";
         Pattern p = Pattern.compile(refreshReg, Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(this.getHtml());
         if (!m.find()) return null;
         String refu = m.group("url").replaceAll("'", "");
-        if (refu.charAt(0)=='/') {
+        if (refu.charAt(0) == '/') {
             refu = this.getHost() + refu;
             return refu;
         }
@@ -139,13 +140,13 @@ public class HttpEntity {
     }
 
     public String getBasePath() {
-       String url = this.getUrl();
+        String url = this.getUrl();
         url = url.split("\\?")[0];
         Integer ed = 0;
         Integer lio = url.lastIndexOf("/");
         // http:// | https://
         //      6          7
-        ed = lio==6||lio==7 ? url.length() : lio;
+        ed = lio == 6 || lio == 7 ? url.length() : lio;
         return url.substring(0, ed);
     }
 
@@ -159,7 +160,7 @@ public class HttpEntity {
 
         Map<String, List<String>> headerFields = this.getHeaders();
 
-        if (headerFields!=null) {
+        if (headerFields != null) {
             Set<String> headerFieldsSet = headerFields.keySet();
             Iterator<String> hearerFieldsItera = headerFieldsSet.iterator();
 
@@ -169,15 +170,15 @@ public class HttpEntity {
                 List<String> headerFieldValue = headerFields.get(headerFieldKey);
 
                 StringBuilder sb2 = new StringBuilder();
-                for (Integer i=0; i<headerFieldValue.size(); i++) {
-                    sb2.append(headerFieldValue.get(i)).append(i+1==headerFieldValue.size() ? " " : ", ");
+                for (Integer i = 0; i < headerFieldValue.size(); i++) {
+                    sb2.append(headerFieldValue.get(i)).append(i + 1 == headerFieldValue.size() ? " " : ", ");
                 }
 
                 sb.append(headerFieldKey).append(":").append(sb2.toString()).append(", ");
             }
         }
 
-        sb.append("html").append(":").append(this.getHtml()==null ? null : this.getHtml().substring(0, this.getHtml().length()>500 ? 500 : this.getHtml().length()))
+        sb.append("html").append(":").append(this.getHtml() == null ? null : this.getHtml().substring(0, this.getHtml().length() > 500 ? 500 : this.getHtml().length()))
                 .append("...").append(" }");
         return sb.toString();
     }

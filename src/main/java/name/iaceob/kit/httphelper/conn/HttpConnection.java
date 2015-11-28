@@ -19,6 +19,7 @@ import java.net.*;
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
@@ -136,6 +137,8 @@ public class HttpConnection {
         try {
             inputStream = conn.getInputStream();
 
+            String ck = conn.getHeaderField("Set-Cookie");
+            List<String> cks = conn.getHeaderFields().get("Set-Cookie");
             if (conn.getHeaderField("Content-Encoding") != null && conn.getHeaderField("Content-Encoding").equals("gzip")) {
                 e = new BufferedReader(new InputStreamReader(new GZIPInputStream(inputStream), charset));
             } else {
@@ -187,7 +190,7 @@ public class HttpConnection {
 
             e = this.readResponseString(conn, this.config.getCharset());
             if (this.config.getAutoDetectCharset()) {
-                e = new String(e.getBytes(HttpConst.DEF_CONTENT_CHARSET), IdentifyCharset.identify(e));
+                e = new String(e.getBytes(HttpConst.DEF_CONTENT_CHARSET), IdentifyCharset.identify(e, conn.getHeaderField(HttpConst.CONTENT_TYPE)));
             }
             URL respUrl = conn.getURL();
             entity.setUrl(respUrl.toString()).setHtml(e)

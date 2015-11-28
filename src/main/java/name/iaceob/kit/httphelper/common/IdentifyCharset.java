@@ -1,6 +1,7 @@
 package name.iaceob.kit.httphelper.common;
 
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,17 +11,40 @@ import java.util.regex.Pattern;
 public class IdentifyCharset {
 
 
-    public static Charset identify(String content) {
-        String ct = null;
-        Pattern pattern = Pattern.compile("<meta\\s+.*?charset=(\"|'|)(?<charset>.*?)(\"|'|>)", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(content);
-        ct = matcher.find() ? matcher.group("charset").toUpperCase() : null;
-        if (ct == null) return IdentifyCharset.getBomCharset(content);
-        ct = "GB-2312".equals(ct) ? "GBK" : ct;
-        return Charset.forName(ct);
+    public static Charset identify(String content, String contentType) {
+        Charset ct1 = IdentifyCharset.getCharsetFromContentType(contentType);
+        if (ct1 != null) return ct1;
+        Charset ct2 = IdentifyCharset.getCharsetFromHtml(content);
+        if (ct2 != null) return ct2;
+        return HttpConst.DEF_CHARSET;
     }
 
-    private static Charset getBomCharset(String html) {
+    private static Charset getCharsetFromContentType(String contentType) {
+        if (contentType == null || "".equals(contentType)) return null;
+        String[] cts = contentType.split(";");
+        if (cts.length == 1) return null;
+        String[] cht = cts[1].split("=");
+        if (cht.length == 1) return null;
+        return Charset.forName(cht[1]);
+    }
+
+    private static Charset getCharsetFromHtml(String html) {
+        String ct = null;
+        Pattern pattern = Pattern.compile("<meta\\s+.*?charset=(\"|'|)(?<charset>.*?)(\"|'|>)", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(html);
+        ct = matcher.find() ? matcher.group("charset").toUpperCase() : null;
+        ct = "GB-2312".equals(ct) ? "GBK" : ct;
+        return ct == null || "".equals(ct) ? null : Charset.forName(ct);
+    }
+
+    /**
+     * 測試發現這幾乎是一種不靠譜的選擇方案
+     *
+     * @param html html 內容
+     * @return Charset
+     */
+    @Deprecated
+    private static Charset getCharsetFromBom(String html) {
         if (html == null || "".equals(html)) return null;
         byte[] bytes = html.getBytes();
         String code;

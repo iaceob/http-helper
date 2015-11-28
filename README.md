@@ -31,6 +31,9 @@ HttpEntity he = HttpKit.get(url);
 HttpEntity he = HttpKit.post(url, data);
 ```
 
+## v2.3.2-beta
+修復自動編碼檢測失敗 bug
+
 ## v2.3.1-beta
 修復獲取 basePath 錯誤問題
 
