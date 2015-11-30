@@ -71,7 +71,15 @@ public class HttpKit {
     }
 
     public static HttpEntity get(String url) {
-        return HttpKit.get(url, null);
+        return HttpKit.get(url, null, null, null, HttpConst.DEF_CHARSET, HttpConst.DEF_TIMEOUT, HttpConst.DEF_SOTIMEOUT, false);
+    }
+
+    public static HttpEntity get(String url, ProxyEntity pe, Boolean autoDetectCharset) {
+        return HttpKit.get(url, null, null, pe, null, HttpConst.DEF_TIMEOUT, HttpConst.DEF_SOTIMEOUT, autoDetectCharset);
+    }
+
+    public static HttpEntity get(String url, Boolean autoDetectCharset) {
+        return HttpKit.get(url, null, null, null, null, HttpConst.DEF_TIMEOUT, HttpConst.DEF_SOTIMEOUT, autoDetectCharset);
     }
 
     public static HttpEntity post(String url, Map<String, String> paras, String data, Map<String, String> header,

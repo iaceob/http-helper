@@ -31,6 +31,9 @@ HttpEntity he = HttpKit.get(url);
 HttpEntity he = HttpKit.post(url, data);
 ```
 
+## v2.3.4-beta
+HttpKit 增加自动检测编码快捷方式
+
 ## v2.3.3-beta
 添加訪問鏈接 HttpStatusCode 爲 400(錯誤訪問) 以上狀態內容獲取
 

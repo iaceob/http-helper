@@ -39,8 +39,13 @@ public class HttpHelperTest {
         url = "http://finance.ifeng.com/news/region/20120718/6775697.shtml";
         url = "http://china.findlaw.cn/ask/question_31067572.html";
         url = "http://m.tianya.cn/sch/sch.jsp?vu=28456309174&o=1&k=sag&t=2";
+        url = "http://liuyan.people.com.cn/thread.php?tid=3100415&display=1&page=13";
+        url = "http://tgrw.jjq.gov.cn/News_list.asp?id=113";
+        url = "http://edu.sina.com.cn/kaoyan/2015-11-20/doc-ifxkwuwy7011845.shtml";
+        url = "http://gkcx.eol.cn/schoolhtm/schoolTemple/school1813.htm";
         HttpConfig config = HttpConfig.create.setConnectTimeout(HttpConst.DEF_TIMEOUT)
                 .setCharset(Charset.forName("utf-8"))
+                .setAutoDetectCharset(true)
                 ;
 //        ProxyEntity pe = new ProxyEntity("192.168.25.254", 28129);
 //        pe.setAccount("yproxyq").setPassword("zproxyx0#");
@@ -50,7 +55,9 @@ public class HttpHelperTest {
         HttpReq req = new HttpReq(HttpMethod.GET, url);
         // req.setHeader(HttpConst.COOKIE, "sf_remember=5ea78002e05b9699e46727a95f37a30c;PHPSESSID=web2~3fg8r6t705k7me8qunvkqc0p41");
         HttpEntity he = hc.exec(req);
+        log.debug("", he.getResponseCode());
         log.debug(he.getBasePath());
+        log.debug(he.getHtml());
     }
 
     @Test
@@ -58,8 +65,14 @@ public class HttpHelperTest {
         String url = "http://segmentfault.com/";
         url = "http://politics.people.com.cn/BIG5/n/2014/0226/c70731-24469659.html";
         url = "http://sd.china.com.cn/a/2015/fzzx_0516/230615.html";
-        HttpEntity c = HttpKit.get(url);
-        log.debug(c.getHtml());
+        url = "http://edu.sina.com.cn/kaoyan/2015-11-20/doc-ifxkwuwy7011845.shtml";
+        url = "http://roll.sohu.com/20151116/n426598703.shtml";
+        url = "http://www.xilu.com/special_beijingwumai.html";
+        url = "http://edu.sina.com.cn/kaoyan/2015-11-20/doc-ifxkwuwy7011845.shtml";
+        url = "http://www.2888392.cn/news/2015/11/30/30323.html";
+        url = "http://ah.offcn.com/html/2015/11/74797.html?pc_hash=lL1mcE";
+        HttpEntity he = HttpKit.get(url, null, null, null, null, HttpConst.DEF_TIMEOUT, HttpConst.DEF_SOTIMEOUT, true);
+        log.debug(he.getHtml());
 
     }
 

@@ -192,7 +192,8 @@ public class HttpConnection {
 
             e = this.readResponseString(conn, this.config.getCharset());
             if (this.config.getAutoDetectCharset()) {
-                e = new String(e.getBytes(HttpConst.DEF_CONTENT_CHARSET), IdentifyCharset.identify(e, conn.getHeaderField(HttpConst.CONTENT_TYPE)));
+                Charset c = IdentifyCharset.identify(e, conn.getHeaderField(HttpConst.CONTENT_TYPE));
+                e = new String(e.getBytes(HttpConst.DEF_CONTENT_CHARSET), c);
             }
             URL respUrl = conn.getURL();
             entity.setUrl(respUrl.toString()).setHtml(e)
