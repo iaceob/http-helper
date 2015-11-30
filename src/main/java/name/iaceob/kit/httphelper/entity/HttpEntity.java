@@ -3,6 +3,7 @@ package name.iaceob.kit.httphelper.entity;
 import name.iaceob.kit.httphelper.common.HttpConst;
 import name.iaceob.kit.httphelper.http.HttpStatus;
 
+import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,15 @@ public class HttpEntity {
     private String html;
     private Integer responseCode;
     private Map<String, List<String>> headers;
+    private Charset charset;
+
+    public Charset getCharset() {
+        return charset;
+    }
+
+    public void setCharset(Charset charset) {
+        this.charset = charset;
+    }
 
     public String getPath() {
         return path;

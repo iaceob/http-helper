@@ -191,9 +191,10 @@ public class HttpConnection {
             }
 
             e = this.readResponseString(conn, this.config.getCharset());
+            Charset autoCharset = this.config.getCharset();
             if (this.config.getAutoDetectCharset()) {
-                Charset c = IdentifyCharset.identify(e, conn.getHeaderField(HttpConst.CONTENT_TYPE));
-                e = new String(e.getBytes(HttpConst.DEF_CONTENT_CHARSET), c);
+                autoCharset = IdentifyCharset.identify(e, conn.getHeaderField(HttpConst.CONTENT_TYPE));
+                e = new String(e.getBytes(HttpConst.DEF_CONTENT_CHARSET), autoCharset);
             }
             URL respUrl = conn.getURL();
             entity.setUrl(respUrl.toString()).setHtml(e)
@@ -202,7 +203,8 @@ public class HttpConnection {
                     .setProtocol(respUrl.getProtocol())
                     .setHost(respUrl.getProtocol() + "://" + respUrl.getHost())
                     .setPath(respUrl.getPath())
-                    .setHeaders(conn.getHeaderFields());
+                    .setHeaders(conn.getHeaderFields())
+                    .setCharset(autoCharset);
         } catch (Exception var8) {
             throw new RuntimeException(var8);
         } finally {

@@ -31,6 +31,9 @@ HttpEntity he = HttpKit.get(url);
 HttpEntity he = HttpKit.post(url, data);
 ```
 
+## v2.3.5-beta
+HttpEntity 增加返回 Charset
+
 ## v2.3.4-beta
 HttpKit 增加自动检测编码快捷方式
 
