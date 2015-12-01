@@ -5,6 +5,7 @@ import name.iaceob.kit.httphelper.common.HttpConst;
 import name.iaceob.kit.httphelper.entity.HttpEntity;
 import org.testng.annotations.Test;
 
+import java.nio.charset.Charset;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class HttpKitTest {
         url = "http://192.168.32.17:20000/sentiment/index";
         Map<String, String> headers = new HashMap<String, String>();
         headers.put(HttpConst.CONTENT_TYPE, "application/json");
-        HttpEntity he = HttpKit.post(url, null, json, headers);
+        HttpEntity he = HttpKit.post(url, null, json, Charset.forName("UTF-8"));
         System.out.println(he.getHtml());
     }
 

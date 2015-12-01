@@ -6,7 +6,6 @@ import name.iaceob.kit.httphelper.config.HttpConfig;
 import name.iaceob.kit.httphelper.conn.HttpConnection;
 import name.iaceob.kit.httphelper.conn.HttpConnectionBuilder;
 import name.iaceob.kit.httphelper.entity.HttpEntity;
-import name.iaceob.kit.httphelper.entity.ProxyEntity;
 import name.iaceob.kit.httphelper.http.HttpReq;
 import name.iaceob.kit.httphelper.kit.HttpKit;
 import name.iaceob.kit.httphelper.restful.HttpMethod;
@@ -43,7 +42,7 @@ public class HttpHelperTest {
         url = "http://tgrw.jjq.gov.cn/News_list.asp?id=113";
         url = "http://edu.sina.com.cn/kaoyan/2015-11-20/doc-ifxkwuwy7011845.shtml";
         url = "http://gkcx.eol.cn/schoolhtm/schoolTemple/school1813.htm";
-        HttpConfig config = HttpConfig.create.setConnectTimeout(HttpConst.DEF_TIMEOUT)
+        HttpConfig config = HttpConfig.me().setConnectTimeout(HttpConst.DEF_TIMEOUT)
                 .setCharset(Charset.forName("utf-8"))
                 // .setAutoDetectCharset(true)
                 ;
@@ -74,11 +73,10 @@ public class HttpHelperTest {
         url = "http://m.tianya.cn/bbs/art.jsp?item=news&id=285919";
         url = "http://henan.sina.com.cn/news/s/2013-08-22/1120-88553.html";
         url = "http://edu.anhuinews.com/system/2015/11/03/007068966.shtml";
-        HttpEntity he = HttpKit.get(url);
+        url = "http://news.sina.com.cn/c/2015-11-25/doc-ifxkwuxx1833706.shtml";
+        HttpEntity he = HttpKit.get(url, true);
         String s = he.getHtml();
-        Charset c = IdentifyCharset.identify(s, he.getHeader(HttpConst.CONTENT_TYPE));
-        String ns = new String(s.getBytes(HttpConst.DEF_CONTENT_CHARSET), c);
-        log.debug(ns);
+        log.debug(s);
 
     }
 

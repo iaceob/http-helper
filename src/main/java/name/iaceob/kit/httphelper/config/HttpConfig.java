@@ -9,21 +9,23 @@ import java.nio.charset.Charset;
  */
 public class HttpConfig {
 
-    public static final HttpConfig create = new HttpConfig();
-
     private Integer connectTimeout;
     private Integer readTimeout;
     private Charset charset;
-    // private Boolean autoDetectCharset;
+    private Boolean autoDetectCharset;
 
-//    public Boolean getAutoDetectCharset() {
-//        return this.autoDetectCharset == null ? false : this.autoDetectCharset;
-//    }
-//
-//    public HttpConfig setAutoDetectCharset(Boolean autoDetectCharset) {
-//        this.autoDetectCharset = autoDetectCharset;
-//        return this;
-//    }
+    public Boolean getAutoDetectCharset() {
+        return this.autoDetectCharset == null ? false : this.autoDetectCharset;
+    }
+
+    public HttpConfig setAutoDetectCharset(Boolean autoDetectCharset) {
+        this.autoDetectCharset = autoDetectCharset;
+        return this;
+    }
+
+    public static HttpConfig me(){
+        return new HttpConfig();
+    }
 
     public Integer getConnectTimeout() {
         return this.connectTimeout == null ? HttpConst.DEF_TIMEOUT : this.connectTimeout;
@@ -58,7 +60,7 @@ public class HttpConfig {
         sb.append("connectTimeout: ").append(this.getConnectTimeout()).append(", ");
         sb.append("readTimeout: ").append(this.getReadTimeout()).append(", ");
         sb.append("charset: ").append(this.getCharset().displayName()).append(", ");
-//        sb.append("autoDetectCharset: ").append(this.getAutoDetectCharset());
+        sb.append("autoDetectCharset: ").append(this.getAutoDetectCharset());
         sb.append(" } ");
         return sb.toString();
     }

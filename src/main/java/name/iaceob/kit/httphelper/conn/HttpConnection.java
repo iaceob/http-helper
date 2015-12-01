@@ -2,6 +2,7 @@ package name.iaceob.kit.httphelper.conn;
 
 import name.iaceob.kit.httphelper.auth.ProxyAuthenticator;
 import name.iaceob.kit.httphelper.common.HttpConst;
+import name.iaceob.kit.httphelper.common.IdentifyCharset;
 import name.iaceob.kit.httphelper.config.HttpConfig;
 import name.iaceob.kit.httphelper.entity.HttpEntity;
 import name.iaceob.kit.httphelper.entity.ProxyEntity;
@@ -19,7 +20,6 @@ import java.net.*;
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
@@ -132,7 +132,7 @@ public class HttpConnection {
         StringBuilder sb = new StringBuilder();
         InputStream inputStream = null;
         BufferedReader e = null;
-//        charset = this.config.getAutoDetectCharset() ? HttpConst.DEF_CONTENT_CHARSET : charset;
+        charset = this.config.getAutoDetectCharset() ? HttpConst.DEF_CONTENT_CHARSET : charset;
 
         try {
 
@@ -190,10 +190,10 @@ public class HttpConnection {
 
             e = this.readResponseString(conn, this.config.getCharset());
             Charset autoCharset = this.config.getCharset();
-//            if (this.config.getAutoDetectCharset()) {
-//                autoCharset = IdentifyCharset.identify(e, conn.getHeaderField(HttpConst.CONTENT_TYPE));
-//                e = new String(e.getBytes(HttpConst.DEF_CONTENT_CHARSET), autoCharset);
-//            }
+            if (this.config.getAutoDetectCharset()) {
+                autoCharset = IdentifyCharset.identify(e, conn.getHeaderField(HttpConst.CONTENT_TYPE));
+                e = new String(e.getBytes(HttpConst.DEF_CONTENT_CHARSET), autoCharset);
+            }
             URL respUrl = conn.getURL();
             entity.setUrl(respUrl.toString()).setHtml(e)
                     .setResponseCode(conn.getResponseCode())
