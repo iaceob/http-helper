@@ -31,6 +31,9 @@ HttpEntity he = HttpKit.get(url);
 HttpEntity he = HttpKit.post(url, data);
 ```
 
+## v2.3.6-beta
+剔除编码自动检测, 在多线程测试中发现会造成乱码, 若不制定编码, 默认使用 ISO-8859-1
+
 ## v2.3.5-beta
 HttpEntity 增加返回 Charset
 

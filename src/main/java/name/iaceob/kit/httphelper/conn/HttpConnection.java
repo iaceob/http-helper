@@ -2,7 +2,6 @@ package name.iaceob.kit.httphelper.conn;
 
 import name.iaceob.kit.httphelper.auth.ProxyAuthenticator;
 import name.iaceob.kit.httphelper.common.HttpConst;
-import name.iaceob.kit.httphelper.common.IdentifyCharset;
 import name.iaceob.kit.httphelper.config.HttpConfig;
 import name.iaceob.kit.httphelper.entity.HttpEntity;
 import name.iaceob.kit.httphelper.entity.ProxyEntity;
@@ -133,14 +132,14 @@ public class HttpConnection {
         StringBuilder sb = new StringBuilder();
         InputStream inputStream = null;
         BufferedReader e = null;
-        charset = this.config.getAutoDetectCharset() ? HttpConst.DEF_CONTENT_CHARSET : charset;
+//        charset = this.config.getAutoDetectCharset() ? HttpConst.DEF_CONTENT_CHARSET : charset;
 
         try {
 
             inputStream = conn.getResponseCode() >= HttpStatus.SC_BAD_REQUEST ? conn.getErrorStream() : conn.getInputStream();
 
-            String ck = conn.getHeaderField("Set-Cookie");
-            List<String> cks = conn.getHeaderFields().get("Set-Cookie");
+//            String ck = conn.getHeaderField("Set-Cookie");
+//            List<String> cks = conn.getHeaderFields().get("Set-Cookie");
             if (conn.getHeaderField("Content-Encoding") != null && conn.getHeaderField("Content-Encoding").equals("gzip")) {
                 e = new BufferedReader(new InputStreamReader(new GZIPInputStream(inputStream), charset));
             } else {
@@ -152,8 +151,7 @@ public class HttpConnection {
                 sb.append(line).append("\n");
             }
 
-            String var5 = sb.toString();
-            return var5;
+            return sb.toString();
         } catch (Exception var14) {
             throw new RuntimeException(var14);
         } finally {
@@ -192,10 +190,10 @@ public class HttpConnection {
 
             e = this.readResponseString(conn, this.config.getCharset());
             Charset autoCharset = this.config.getCharset();
-            if (this.config.getAutoDetectCharset()) {
-                autoCharset = IdentifyCharset.identify(e, conn.getHeaderField(HttpConst.CONTENT_TYPE));
-                e = new String(e.getBytes(HttpConst.DEF_CONTENT_CHARSET), autoCharset);
-            }
+//            if (this.config.getAutoDetectCharset()) {
+//                autoCharset = IdentifyCharset.identify(e, conn.getHeaderField(HttpConst.CONTENT_TYPE));
+//                e = new String(e.getBytes(HttpConst.DEF_CONTENT_CHARSET), autoCharset);
+//            }
             URL respUrl = conn.getURL();
             entity.setUrl(respUrl.toString()).setHtml(e)
                     .setResponseCode(conn.getResponseCode())

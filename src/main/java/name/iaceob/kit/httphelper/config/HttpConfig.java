@@ -14,16 +14,16 @@ public class HttpConfig {
     private Integer connectTimeout;
     private Integer readTimeout;
     private Charset charset;
-    private Boolean autoDetectCharset;
+    // private Boolean autoDetectCharset;
 
-    public Boolean getAutoDetectCharset() {
-        return this.autoDetectCharset == null ? false : this.autoDetectCharset;
-    }
-
-    public HttpConfig setAutoDetectCharset(Boolean autoDetectCharset) {
-        this.autoDetectCharset = autoDetectCharset;
-        return this;
-    }
+//    public Boolean getAutoDetectCharset() {
+//        return this.autoDetectCharset == null ? false : this.autoDetectCharset;
+//    }
+//
+//    public HttpConfig setAutoDetectCharset(Boolean autoDetectCharset) {
+//        this.autoDetectCharset = autoDetectCharset;
+//        return this;
+//    }
 
     public Integer getConnectTimeout() {
         return this.connectTimeout == null ? HttpConst.DEF_TIMEOUT : this.connectTimeout;
@@ -44,7 +44,7 @@ public class HttpConfig {
     }
 
     public Charset getCharset() {
-        return charset == null ? HttpConst.DEF_CHARSET : charset;
+        return this.charset == null ? HttpConst.DEF_CONTENT_CHARSET : this.charset;
     }
 
     public HttpConfig setCharset(Charset charset) {
@@ -58,7 +58,7 @@ public class HttpConfig {
         sb.append("connectTimeout: ").append(this.getConnectTimeout()).append(", ");
         sb.append("readTimeout: ").append(this.getReadTimeout()).append(", ");
         sb.append("charset: ").append(this.getCharset().displayName()).append(", ");
-        sb.append("autoDetectCharset: ").append(this.getAutoDetectCharset());
+//        sb.append("autoDetectCharset: ").append(this.getAutoDetectCharset());
         sb.append(" } ");
         return sb.toString();
     }
