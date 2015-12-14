@@ -128,23 +128,24 @@ public class HttpConnection {
         }
     }
 
-    private String readResponseString(HttpURLConnection conn, Charset charset) {
+    private String readResponseString(InputStream inputStream, Boolean gzip, Charset charset) {
         StringBuilder sb = new StringBuilder();
-        InputStream inputStream = null;
         BufferedReader e = null;
         charset = this.config.getAutoDetectCharset() ? HttpConst.DEF_CONTENT_CHARSET : charset;
 
         try {
-
-            inputStream = conn.getResponseCode() >= HttpStatus.SC_BAD_REQUEST ? conn.getErrorStream() : conn.getInputStream();
-
 //            String ck = conn.getHeaderField("Set-Cookie");
 //            List<String> cks = conn.getHeaderFields().get("Set-Cookie");
-            if (conn.getHeaderField("Content-Encoding") != null && conn.getHeaderField("Content-Encoding").equals("gzip")) {
-                e = new BufferedReader(new InputStreamReader(new GZIPInputStream(inputStream), charset));
-            } else {
-                e = new BufferedReader(new InputStreamReader(inputStream, charset));
-            }
+            e = gzip ?
+                    new BufferedReader(new InputStreamReader(new GZIPInputStream(inputStream), charset)) :
+                    new BufferedReader(new InputStreamReader(inputStream, charset));
+
+//            if (conn.getHeaderField("Content-Encoding") != null && conn.getHeaderField("Content-Encoding").equals("gzip")) {
+//                e = new BufferedReader(new InputStreamReader(new GZIPInputStream(inputStream), charset));
+//            } else {
+//                e = new BufferedReader(new InputStreamReader(inputStream, charset));
+//            }
+
             String line = null;
 
             while ((line = e.readLine()) != null) {
@@ -188,7 +189,11 @@ public class HttpConnection {
                 os.close();
             }
 
-            e = this.readResponseString(conn, this.config.getCharset());
+            Integer responseCode = conn.getResponseCode();
+            InputStream inputStream = responseCode >= HttpStatus.SC_BAD_REQUEST ? conn.getErrorStream() : conn.getInputStream();
+            e = this.readResponseString(inputStream,
+                    conn.getHeaderField("Content-Encoding") != null && conn.getHeaderField("Content-Encoding").equals("gzip"),
+                    this.config.getCharset());
             Charset autoCharset = this.config.getCharset();
             if (this.config.getAutoDetectCharset()) {
                 autoCharset = IdentifyCharset.identify(e, conn.getHeaderField(HttpConst.CONTENT_TYPE));
@@ -196,7 +201,7 @@ public class HttpConnection {
             }
             URL respUrl = conn.getURL();
             entity.setUrl(respUrl.toString()).setHtml(e)
-                    .setResponseCode(conn.getResponseCode())
+                    .setResponseCode(responseCode)
                     .setUri(respUrl.getPath()).setDomain(respUrl.getHost())
                     .setProtocol(respUrl.getProtocol())
                     .setHost(respUrl.getProtocol() + "://" + respUrl.getHost())
