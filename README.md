@@ -25,13 +25,20 @@ he.getHeaderToStr("Location");
 he.getHtml();
 ```
 
-或者更简单的方式使用 HttpKit
+~~或者更简单的方式使用 HttpKit~~
+v2.4.3-beta 中已将 HttpKit 替换为 HttpHelper, HttpKit 已不建议使用, 暂保留, 方法于 HttpHelper 中相同, 可直接替换, 后期重构有可能会恢复.
+
 ```
-HttpEntity he = HttpKit.get(url);
-HttpEntity he = HttpKit.post(url, data);
+HttpEntity he = HttpHelper.get(url);
+HttpEntity he = HttpHelper.post(url, data);
 ```
 
-##2.4.1-beta
+
+## 2.4.3-beta
+小版本更新, 将 HttpKit 替换为 HttpHelper, 指定编译版本, 准备重构逻辑实现, HttpHelper 中增加 request 方法, 支持多种类新请求, 暂包括 PUT DELETE GET POST
+
+
+## 2.4.1-beta
 9a970b0(恢复自动检测编码, 修复在多线程环境中自动检测编码失败问题.)
 
 ## v2.3.6-beta
