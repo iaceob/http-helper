@@ -7,7 +7,7 @@ import name.iaceob.kit.httphelper.conn.HttpConnection;
 import name.iaceob.kit.httphelper.conn.HttpConnectionBuilder;
 import name.iaceob.kit.httphelper.entity.HttpEntity;
 import name.iaceob.kit.httphelper.http.HttpReq;
-import name.iaceob.kit.httphelper.kit.HttpKit;
+import name.iaceob.kit.httphelper.kit.HttpHelper;
 import name.iaceob.kit.httphelper.restful.HttpMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,10 +74,18 @@ public class HttpHelperTest {
         url = "http://henan.sina.com.cn/news/s/2013-08-22/1120-88553.html";
         url = "http://edu.anhuinews.com/system/2015/11/03/007068966.shtml";
         url = "http://news.sina.com.cn/c/2015-11-25/doc-ifxkwuxx1833706.shtml";
-        HttpEntity he = HttpKit.get(url, true);
+        HttpEntity he = HttpHelper.get(url, true);
         String s = he.getHtml();
         log.debug(s);
 
+    }
+
+    @Test
+    public void ttd4() {
+        String url = "http://my.oschina.net/tinyframework/blog/288661";
+        HttpEntity he = HttpHelper.request(HttpMethod.GET, url);
+        log.debug("headers: {}", he.getHeaders());
+        log.debug("html: {}", he.getHtml());
     }
 
 

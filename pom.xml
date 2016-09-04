@@ -6,7 +6,7 @@
 
     <groupId>name.iaceob.kit</groupId>
     <artifactId>http-helper</artifactId>
-    <version>2.4.2-beta</version>
+    <version>2.4.3-beta</version>
     <packaging>jar</packaging>
     <name>http-helper</name>
     <description>Http Helper</description>
@@ -57,6 +57,14 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${version-java}</source>
+                    <target>${version-java}</target>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3</version>
                 <configuration>
@@ -77,7 +85,7 @@
             </plugin>
         </plugins>
     </build>
-
+<!--
     <repositories>
         <repository>
             <id>oschina-repository</id>
@@ -92,5 +100,5 @@
             </snapshots>
         </repository>
     </repositories>
-
+-->
 </project>
