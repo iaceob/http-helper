@@ -182,7 +182,7 @@ public class HttpConnection {
             conn = this.getConnection(req);
             conn.connect();
 
-            if (req.getMethod() != HttpMethod.GET) {
+            if (req.getMethod() != HttpMethod.GET && req.getData() != null) {
                 OutputStream os = conn.getOutputStream();
                 os.write(req.getData().getBytes(this.config.getCharset()));
                 os.flush();
