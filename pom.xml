@@ -71,6 +71,9 @@
                     <includes>
                         <include>**/*.class</include>
                     </includes>
+                    <excludes>
+                        <exclude>**/logback.xml</exclude>
+                    </excludes>
                     <finalName>${project.name}-${project.version}</finalName>
                 </configuration>
             </plugin>
