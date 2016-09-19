@@ -55,6 +55,10 @@ http.delete("http://httpbin.org/delete");
 
 ## 升级日志
 
+### v3.1-beta
+
+- 移除 v2.x 代码
+
 ### v3.0-beta
 
 - 修改整体请求实现方式, 代码逻辑更加严谨, 包结构更加合理
