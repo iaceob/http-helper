@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 /**
  * Created by cox on 2015/11/27.
  */
+@Deprecated
 public class HttpEntity {
     private String url;
     private String protocol;

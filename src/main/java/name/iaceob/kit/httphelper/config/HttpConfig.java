@@ -7,6 +7,7 @@ import java.nio.charset.Charset;
 /**
  * Created by cox on 2015/11/27.
  */
+@Deprecated
 public class HttpConfig {
 
     private Integer connectTimeout;

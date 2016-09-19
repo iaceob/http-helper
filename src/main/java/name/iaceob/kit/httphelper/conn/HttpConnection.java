@@ -6,13 +6,11 @@ import name.iaceob.kit.httphelper.common.IdentifyCharset;
 import name.iaceob.kit.httphelper.config.HttpConfig;
 import name.iaceob.kit.httphelper.entity.HttpEntity;
 import name.iaceob.kit.httphelper.entity.ProxyEntity;
-import name.iaceob.kit.httphelper.http.HttpReq;
+import name.iaceob.kit.httphelper.req.HttpReq;
 import name.iaceob.kit.httphelper.http.HttpStatus;
 import name.iaceob.kit.httphelper.restful.HttpMethod;
 import name.iaceob.kit.httphelper.trust.TrustAnyHostnameVerifier;
 import name.iaceob.kit.httphelper.trust.TrustAnyTrustManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.*;
 import java.io.*;
@@ -26,9 +24,9 @@ import java.util.zip.GZIPInputStream;
 /**
  * Created by cox on 2015/11/27.
  */
+@Deprecated
 public class HttpConnection {
 
-    private static final Logger log = LoggerFactory.getLogger(HttpConnection.class);
     private static final SSLSocketFactory sslSocketFactory = initSSLSocketFactory();
     private static final TrustAnyHostnameVerifier trustAnyHostnameVerifier = new TrustAnyHostnameVerifier();
 
@@ -69,7 +67,7 @@ public class HttpConnection {
             ((HttpsURLConnection) conn).setHostnameVerifier(trustAnyHostnameVerifier);
         }
 
-        conn.setRequestMethod(req.getMethod().getMethod());
+        conn.setRequestMethod(req.getMethod().getName());
         conn.setDoOutput(true);
         conn.setDoInput(true);
         conn.setConnectTimeout(HttpConst.DEF_TIMEOUT);

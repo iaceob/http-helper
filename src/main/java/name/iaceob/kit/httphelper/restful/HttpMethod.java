@@ -7,12 +7,25 @@ public enum HttpMethod {
     GET("GET"),
     POST("POST"),
     PUT("PUT"),
-    DELETE("DELETE");
-    private final String method;
-    HttpMethod(String method) {
-        this.method = method;
+    PATCH("PATCH"),
+    DELETE("DELETE"),
+    COPY("COPY"),
+    HEAD("HEAD"),
+    OPTIONS("OPTIONS"),
+    LINK("LINK"),
+    UNLINK("UNLINK"),
+    PURGE("PURGE"),
+    LOCK("LOCK"),
+    UNLOCK("UNLOCK"),
+    PROPFIND("PROPFIND"),
+    VIEW("VIEW"),
+    ;
+    private final String name;
+    HttpMethod(String name) {
+        this.name = name;
     }
-    public String getMethod() {
-        return this.method;
+
+    public String getName() {
+        return name;
     }
 }

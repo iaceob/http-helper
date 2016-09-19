@@ -5,8 +5,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
-* Created by iaceob on 2015/11/28.
-*/
+ * Created by iaceob on 2015/11/28.
+ * 一个不完整的自动识别编码方式, 暂不建议使用
+ */
+@Deprecated
 public class IdentifyCharset {
 
 

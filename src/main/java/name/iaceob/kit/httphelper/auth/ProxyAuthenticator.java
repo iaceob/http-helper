@@ -9,14 +9,14 @@ import java.net.PasswordAuthentication;
  */
 public class ProxyAuthenticator extends Authenticator {
 
-    private String account;
-    private String password;
-    public ProxyAuthenticator(String account, String password) {
-        this.account = account;
-        this.password = password;
+    private String auth;
+    private String passwd;
+    public ProxyAuthenticator(String auth, String passwd) {
+        this.auth = auth;
+        this.passwd = passwd;
     }
     @Override
     protected PasswordAuthentication getPasswordAuthentication() {
-        return (new PasswordAuthentication(this.account, this.password.toCharArray()));
+        return (new PasswordAuthentication(this.auth, this.passwd.toCharArray()));
     }
 }

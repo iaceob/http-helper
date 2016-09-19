@@ -3,6 +3,7 @@ package name.iaceob.kit.httphelper.entity;
 /**
  * Created by iaceob on 2015/10/10.
  */
+@Deprecated
 public class ProxyEntity {
     private String host;
     private Integer port;

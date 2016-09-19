@@ -1,4 +1,4 @@
-package name.iaceob.kit.httphelper.http;
+package name.iaceob.kit.httphelper.req;
 
 import name.iaceob.kit.httphelper.common.HttpConst;
 import name.iaceob.kit.httphelper.restful.HttpMethod;
@@ -10,6 +10,7 @@ import java.util.Set;
 /**
  * Created by iaceob on 2015/11/28.
  */
+@Deprecated
 public class HttpReq {
 
     private HttpMethod method;
@@ -99,7 +100,7 @@ public class HttpReq {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(super.toString()).append(" {");
-        sb.append("method: ").append(this.getMethod().getMethod()).append(", ");
+        sb.append("method: ").append(this.getMethod().getName()).append(", ");
         sb.append("url: ").append(this.getUrl()).append(", ");
         if (this.paras!=null) {
             sb.append("paras: {");
