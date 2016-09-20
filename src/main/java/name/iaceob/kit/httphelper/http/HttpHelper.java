@@ -6,7 +6,6 @@ import name.iaceob.kit.httphelper.conn.HttpConn;
 import name.iaceob.kit.httphelper.data.HttpData;
 import name.iaceob.kit.httphelper.kit.Http;
 import name.iaceob.kit.httphelper.proxy.HttpProxy;
-import name.iaceob.kit.httphelper.proxy.TcpProxy;
 import name.iaceob.kit.httphelper.req.HttpRequest;
 import name.iaceob.kit.httphelper.restful.HttpMethod;
 
@@ -21,6 +20,9 @@ public class HttpHelper implements Http {
     public HttpHelper() {
     }
 
+    public static HttpHelper instance() {
+        return new HttpHelper();
+    }
 
     @Override
     public HttpData connect(HttpMethod method, String url, List<HttpPara> paras, String data, List<HttpHeader> headers, Charset charset, HttpProxy proxy) {
