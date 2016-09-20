@@ -35,15 +35,13 @@ public class HttpHelper implements Http {
         HttpConf conf = new HttpConf();
 
         if (paras != null && !paras.isEmpty())
-            for (HttpPara para : paras)
-                request.setParas(para);
+            paras.forEach(request::setParas);
 
         if (data != null && !"".equals(data))
             request.setData(data);
 
         if (headers != null && !headers.isEmpty())
-            for (HttpHeader header : headers)
-                request.setHeader(header);
+            headers.forEach(request::setHeader);
 
         if (charset == null)
             charset = HttpConst.DEF_CHARSET;
