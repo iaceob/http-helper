@@ -94,8 +94,8 @@ public class HttpHelper implements Http {
     }
 
     @Override
-    public HttpData get(String url, List<HttpPara> paras) {
-        return this.connect(HttpMethod.GET, url, paras, null, null, null, null);
+    public HttpData get(String url, List<HttpHeader> headers) {
+        return this.connect(HttpMethod.GET, url, null, null, headers, null, null);
     }
 
     @Override
@@ -124,6 +124,11 @@ public class HttpHelper implements Http {
     }
 
     @Override
+    public HttpData post(String url, List<HttpHeader> headers) {
+        return this.connect(HttpMethod.POST, url, null, null, headers, null, null);
+    }
+
+    @Override
     public HttpData post(String url) {
         return this.connect(HttpMethod.POST, url, null, null, null, null, null);
     }
@@ -146,6 +151,26 @@ public class HttpHelper implements Http {
     @Override
     public HttpData put(String url, List<HttpPara> paras, String data) {
         return this.connect(HttpMethod.PUT, url, paras, data, null, null, null);
+    }
+
+    @Override
+    public HttpData put(String url, List<HttpPara> paras, List<HttpHeader> headers) {
+        return this.connect(HttpMethod.PUT, url, paras, null, headers, null, null);
+    }
+
+    @Override
+    public HttpData put(String url, List<HttpHeader> headers) {
+        return this.connect(HttpMethod.PUT, url, null, null, headers, null, null);
+    }
+
+    @Override
+    public HttpData put(String url, String data, List<HttpHeader> headers, Charset charset) {
+        return this.connect(HttpMethod.PUT, url, null, data, headers, charset, null);
+    }
+
+    @Override
+    public HttpData put(String url, String data, List<HttpHeader> headers) {
+        return this.connect(HttpMethod.PUT, url, null, data, headers, null, null);
     }
 
     @Override
@@ -176,6 +201,26 @@ public class HttpHelper implements Http {
     @Override
     public HttpData delete(String url, List<HttpPara> paras, String data) {
         return this.connect(HttpMethod.DELETE, url, paras, data, null, null, null);
+    }
+
+    @Override
+    public HttpData delete(String url, List<HttpPara> paras, List<HttpHeader> headers) {
+        return this.connect(HttpMethod.DELETE, url, paras, null, headers, null, null);
+    }
+
+    @Override
+    public HttpData delete(String url, List<HttpHeader> headers) {
+        return this.connect(HttpMethod.DELETE, url, null, null, headers, null, null);
+    }
+
+    @Override
+    public HttpData delete(String url, String data, List<HttpHeader> headers, Charset charset) {
+        return this.connect(HttpMethod.DELETE, url, null, data, headers, charset, null);
+    }
+
+    @Override
+    public HttpData delete(String url, String data, List<HttpHeader> headers) {
+        return this.connect(HttpMethod.DELETE, url, null, data, headers, null, null);
     }
 
     @Override

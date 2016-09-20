@@ -55,6 +55,10 @@ http.delete("http://httpbin.org/delete");
 
 ## 升级日志
 
+### v3.2-beta
+
+- 优化 Http 接口参数, 新增常用参数接口
+
 ### v3.1-beta
 
 - 移除 v2.x 代码

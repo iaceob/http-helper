@@ -7,7 +7,7 @@ import java.nio.charset.Charset;
  */
 public class HttpConst {
 
-    private static final String _HTTPHELPER_VERSION = "3.0-beta";
+    private static final String _HTTPHELPER_VERSION = "3.2-beta";
 
     public static final String LOCATION = "Location";
     public static final String USER_AGENT = "User-Agent";

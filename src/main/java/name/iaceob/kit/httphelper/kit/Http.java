@@ -43,7 +43,7 @@ public interface Http {
 
     HttpData get(String url, List<HttpPara> paras, List<HttpHeader> headers);
 
-    HttpData get(String url, List<HttpPara> paras);
+    HttpData get(String url, List<HttpHeader> headers);
 
     HttpData get(String url);
 
@@ -55,6 +55,8 @@ public interface Http {
 
     HttpData post(String url, String data);
 
+    HttpData post(String url, List<HttpHeader> headers);
+
     HttpData post(String url);
 
     HttpData put(String url, List<HttpPara> paras, String data, List<HttpHeader> headers, Charset charset, HttpProxy proxy);
@@ -64,6 +66,14 @@ public interface Http {
     HttpData put(String url, List<HttpPara> paras, String data, List<HttpHeader> headers);
 
     HttpData put(String url, List<HttpPara> paras, String data);
+
+    HttpData put(String url, List<HttpPara> paras, List<HttpHeader> headers);
+
+    HttpData put(String url, List<HttpHeader> headers);
+
+    HttpData put(String url, String data, List<HttpHeader> headers, Charset charset);
+
+    HttpData put(String url, String data, List<HttpHeader> headers);
 
     HttpData put(String url, String data);
 
@@ -76,6 +86,14 @@ public interface Http {
     HttpData delete(String url, List<HttpPara> paras, String data, List<HttpHeader> headers);
 
     HttpData delete(String url, List<HttpPara> paras, String data);
+
+    HttpData delete(String url, List<HttpPara> paras, List<HttpHeader> headers);
+
+    HttpData delete(String url, List<HttpHeader> headers);
+
+    HttpData delete(String url, String data, List<HttpHeader> headers, Charset charset);
+
+    HttpData delete(String url, String data, List<HttpHeader> headers);
 
     HttpData delete(String url, String data);
 
