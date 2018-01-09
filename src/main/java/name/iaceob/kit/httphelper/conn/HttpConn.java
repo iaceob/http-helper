@@ -278,7 +278,7 @@ public class HttpConn {
         List<HttpCookie> cks = new ArrayList<>();
 
         Map<String, List<String>> respHeaders = conn.getHeaderFields();
-        System.out.println(respHeaders.toString());
+//        System.out.println(respHeaders.toString());
         List<String> hvals;
         for (String key : respHeaders.keySet()) {
             if (key == null || "".equals(key))
