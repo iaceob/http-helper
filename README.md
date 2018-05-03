@@ -36,5 +36,5 @@ Http.request(EoUrl.with("https://httpbin.org").subpath("post").para("arg0", 1))
 
 ### MORE
 
-[https://github.com/ein-windmill/enoa/tree/master/enoa-example/example-http](https://github.com/ein-windmill/enoa/tree/master/enoa-example/example-http)
+[example-http](https://github.com/ein-windmill/enoa/tree/master/enoa-example/example-http)
 
